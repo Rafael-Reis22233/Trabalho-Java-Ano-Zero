@@ -1,7 +1,7 @@
 /*
 * Desenvolvido por: Grupo 4 "Os Grandes"
 * Versão: 1.0
-* Ultima Modificação: 24-02-2022 15:15
+* Ultima Modificação: 24-02-2022 15:40
 * */
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,7 +59,7 @@ public class Main {
           break;
 
         case "Carregar Alunos":
-          if(nElems < nomes.length){
+          if(nElems < numeros.length){
             nElems = importarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           }else {
             JOptionPane.showMessageDialog(null, "Não existem dados");
@@ -205,7 +205,7 @@ public class Main {
 
     Scanner fichFunc = new Scanner(new File("DadosAlunos.txt"));
 
-    while(fichFunc.hasNextLine() && nElems < nomes.length){
+    while(fichFunc.hasNextLine() && nElems < numeros.length){
 
       String linha = fichFunc.nextLine();
       String[] vetLinha = linha.split(":");
