@@ -5,7 +5,7 @@
 * */
 import javax.swing.*;
 
-public class Main {
+public class main {
   public static void main(String[] args) {
 
     //Constantes
@@ -203,6 +203,7 @@ public class Main {
     selectedOption = (String) JOptionPane.showInputDialog(null, "Selecione o que pretende fazer:\n\n", "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
     return selectedOption;
+
 
   }
 
