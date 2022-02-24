@@ -3,10 +3,15 @@
 * Versão: 1.0
 * Ultima Modificação: 23-02-2022 22:14
 * */
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Formatter;
+import java.util.Scanner;
+
 import javax.swing.*;
 
 public class Main {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws FileNotFoundException {
 
     //Constantes
     final int TAMANHO = 50;
@@ -54,13 +59,15 @@ public class Main {
           break;
 
         case "Carregar Alunos":
-          System.out.println("CARREHAR ALUNOS");
-          //TODO: carregarAlunos()
-          break;
+          if(nElems < nomes.length){
+            nElems = importarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          }else {
+            JOptionPane.showMessageDialog(null, "Não existem dados");
+          }
+            break;
 
         case "Exportar Alunos":
-          System.out.println("EXPORTAR ALUNOS");
-          //TODO: exportarAlunos()
+          exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
 
         default:
@@ -70,6 +77,55 @@ public class Main {
   }
 
   /*Funcionalidades*/
+
+  private static int importarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+      int[] vbNotas, int nElems) throws FileNotFoundException {
+    int cop = nElems;
+    Scanner fichFunc = new Scanner(new File("DadosAlunos.txt"));
+    while(fichFunc.hasNextLine() && nElems < nomes.length){
+        String linha = fichFunc.nextLine();
+        String[] vetLinha = linha.split(":");
+        if(pesquisar(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, vetLinha[2]) == -1){
+            turmas[nElems] = vetLinha[0];
+            numeros[nElems] = Integer.parseInt(vetLinha[1].trim());
+            nomes[nElems] = vetLinha[2];
+            algNotas[nElems] = Integer.parseInt(vetLinha[3].trim());
+            javaNotas[nElems] = Integer.parseInt(vetLinha[4].trim());
+            vbNotas[nElems] = Integer.parseInt(vetLinha[5].trim());
+            nElems++;
+      }
+    }
+    fichFunc.close();
+    JOptionPane.showMessageDialog(null, (nElems-cop) +  " Dado(s) carregados(s)");
+    return nElems; 
+  }
+
+  private static int pesquisar(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+      int[] vbNotas, int nElems, String nome) {
+    int pos = 0;
+    while (pos < nElems && nome.equalsIgnoreCase(nomes[pos]) == false) {
+        pos++;
+    }
+    if (pos < nElems) {
+        return pos;
+    } else {
+        return -1;
+    }
+  }
+
+  private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+      int[] vbNotas, int nElems) throws FileNotFoundException {
+        Formatter fichFunc = new Formatter("DadosAlunos.txt");
+        for (int x = 0; x < nElems; x++) {
+            if(x == 0) {
+                fichFunc.format("%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+            }else{
+                fichFunc.format("\n%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+            }            
+        }
+        fichFunc.close();
+        JOptionPane.showMessageDialog(null, nElems +  " Dado(s) exportado(s)");
+  }
 
   private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
