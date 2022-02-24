@@ -200,21 +200,28 @@ public class Main {
 
   }
 
-  private static int importarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                                   int[] vbNotas, int nElems) throws FileNotFoundException {
+  private static int importarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) throws FileNotFoundException {
     int cop = nElems;
+
     Scanner fichFunc = new Scanner(new File("DadosAlunos.txt"));
+
     while(fichFunc.hasNextLine() && nElems < nomes.length){
+
       String linha = fichFunc.nextLine();
       String[] vetLinha = linha.split(":");
-      if(pesquisar(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, vetLinha[2]) == -1){
+
+      if(pesquisar(numeros, nElems, Integer.parseInt(vetLinha[1])) == -1){
+
         turmas[nElems] = vetLinha[0];
         numeros[nElems] = Integer.parseInt(vetLinha[1].trim());
         nomes[nElems] = vetLinha[2];
+
         algNotas[nElems] = Integer.parseInt(vetLinha[3].trim());
         javaNotas[nElems] = Integer.parseInt(vetLinha[4].trim());
         vbNotas[nElems] = Integer.parseInt(vetLinha[5].trim());
+
         nElems++;
+
       }
     }
     fichFunc.close();
@@ -222,8 +229,7 @@ public class Main {
     return nElems;
   }
 
-  private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                                    int[] vbNotas, int nElems) throws FileNotFoundException {
+  private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) throws FileNotFoundException {
     Formatter fichFunc = new Formatter("DadosAlunos.txt");
     for (int x = 0; x < nElems; x++) {
       if(x == 0) {
@@ -331,10 +337,9 @@ public class Main {
 
   }
 
-  private static int pesquisar(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                               int[] vbNotas, int nElems, String nome) {
+  private static int pesquisar(int[] numeros, int nElems, int numero) {
     int pos = 0;
-    while (pos < nElems && nome.equalsIgnoreCase(nomes[pos]) == false) {
+    while (pos < nElems && numero != numeros[pos]) {
       pos++;
     }
     if (pos < nElems) {
