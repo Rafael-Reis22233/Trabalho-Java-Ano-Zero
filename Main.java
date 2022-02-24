@@ -76,13 +76,11 @@ public class Main {
     do {
       nomes[nElems] = JOptionPane.showInputDialog(null, "Insira o nome do(a) aluno(a):", "Inserir Aluno",  JOptionPane.PLAIN_MESSAGE);
 
-      System.out.println(nomes[nElems].length());
-
       if (nomes[nElems].length() == 0){
         JOptionPane.showMessageDialog(null, "Por favor preencha o campo do nome!", "Nome inválido!", JOptionPane.WARNING_MESSAGE);
       }
 
-    }while (nomes[nElems].length() == 0);
+    }while (nomes[nElems] == null || nomes[nElems].length() == 0);
 
     do{
 
@@ -114,7 +112,7 @@ public class Main {
     int option;
 
     options = new String[] {"Ordenar Alunos", "Voltar"};
-    option = JOptionPane.showOptionDialog(null, tabelaAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems), "Ver Alunos", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+    option = JOptionPane.showOptionDialog(null, tabelaAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems), "Ver Alunos", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
 
     if(option == 0){
       ordenarClassificacao(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
@@ -217,19 +215,15 @@ public class Main {
     JPanel panel = new JPanel();
     panel.add(lbl);
 
-    int selectedOption = JOptionPane.showOptionDialog(null, panel, "The Title", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[1]);
+    int selectedOption = JOptionPane.showOptionDialog(null, panel, "The Title", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[1]);
 
-    if (selectedOption == 1){
-      return false;
-    }
-
-    return true;
+    return selectedOption != 1;
 
   }
 
   private static String tabelaAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems){
 
-    String tabela = "";
+    String tabela;
 
     tabela = "<html> <head> <style> table { font-family: arial, sans-serif; border-collapse: collapse; width: 500px; margin-right: 0,} td, th { border: 2px solid #dddddd; text-align: left; margin-right: 0;} tr:nth-child(even) { background-color: #000000; font-weight: bold} </style> </head> <body> <table> <tr> <th>Turma</th> <th>Número</th> <th>Nome</th> <th>Alg</th> <th>Java</th> <th>VB</th> <th>Final</th> </tr>";
 
@@ -245,9 +239,7 @@ public class Main {
 
   private static int notaFinal(int algNota, int javaNota, int vbNota, double pAlg, double pJava, double pVb) {
 
-    int mediaPond = (int) ((algNota * pAlg) + (javaNota * pJava) + (vbNota * pVb));
-
-    return  mediaPond;
+    return (int) ((algNota * pAlg) + (javaNota * pJava) + (vbNota * pVb));
 
   }
 
