@@ -29,7 +29,7 @@ Para além destas, existem ainda algumas outras que são necessárias para otimi
 
 Diferente das linguagens de programação modernas, que são compiladas para código nativo, a linguagem Java é compilada para bytecode que é interpretado por uma máquina virtual chamada Java Virtual Machine (JVM). 
 
-Isto possibilita o uso da característica *Wright Once, Run Anywhere* (WORA) que permite que o mesmo código consiga correr em todos dispositivos em que o Java Runtime Environment (JRE) esteja instalado o que faz com que o programador não tenha que se preocupar com a arquitetura do computador pois todas as operações a baixo nível são processadas pela JVM.
+Isto possibilita o uso da característica ***Wright Once, Run Anywhere*** (WORA) que permite que o mesmo código consiga correr em todos dispositivos em que o ***Java Runtime Environment*** (JRE) esteja instalado o que faz com que o programador não tenha que se preocupar com a arquitetura do computador pois todas as operações a baixo nível são processadas pela JVM.
 
 A tecnologia tem várias aplicações possíveis sendo mais utilizada para:
 
