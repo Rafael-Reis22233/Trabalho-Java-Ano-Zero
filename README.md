@@ -23,6 +23,8 @@ A aplicação tem como objetivo fazer a gestão de alunos cujos dados são intro
 
 Para além destas, existem ainda algumas outras que são necessárias para otimizar/organizar o código.
 
+***Todo o código pode ser encontrado no ficheiro [Main.java](https://github.com/Rafael-Reis22233/Trabalho-Java-Ano-Zero/blob/main/Main.java)***
+
 ## A Tecnologia
 
 **Java** é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipa de programadores chefiada por James Gosling, na empresa Sun Microsystems. Em 2008 o Java foi adquirido pela **Oracle Corporation**. 
@@ -40,10 +42,6 @@ A tecnologia tem várias aplicações possíveis sendo mais utilizada para:
 - Aplicações Móveis
 - Sistemas incorporados
 - Aplicações empresariais
-
----
-
-***Todo o código pode ser encontrado no ficheiro [Main.java](https://github.com/Rafael-Reis22233/Trabalho-Java-Ano-Zero/blob/main/Main.java)***
 
 ---
 
