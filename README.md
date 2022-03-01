@@ -41,6 +41,8 @@ A tecnologia tem várias aplicações possíveis sendo mais utilizada para:
 - Sistemas incorporados
 - Aplicações empresariais
 
+---
+
 ***Todo o código pode ser encontrado no ficheiro [Main.java](https://github.com/Rafael-Reis22233/Trabalho-Java-Ano-Zero/blob/main/Main.java)***
 
 ---
