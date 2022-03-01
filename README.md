@@ -25,7 +25,8 @@ Para além destas, existem ainda algumas outras que são necessárias para otimi
 
 ## A Tecnologia
 
-**Java** é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipa de programadores chefiada por James Gosling, na empresa Sun Microsystems. Em 2008 o Java foi adquirido pela **Oracle Corporation**. Diferente das linguagens de programação modernas, que são compiladas para código nativo, a linguagem Java é compilada para bytecode que é interpretado por uma máquina virtual chamada Java Virtual Machine (JVM). Isto possibilita o uso da característica *Wright Once, Run Anywhere* (WORA) que permite que o mesmo código consiga correr em todos dispositivos em que a tecnologia está instalada o que faz com que o programador não tenha que se preocupar com a arquitetura do computador pois todas as operações a baixo nível são processadas pela JVM.
+**Java** é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipa de programadores chefiada por James Gosling, na empresa Sun Microsystems. Em 2008 o Java foi adquirido pela **Oracle Corporation**. 
+Diferente das linguagens de programação modernas, que são compiladas para código nativo, a linguagem Java é compilada para bytecode que é interpretado por uma máquina virtual chamada Java Virtual Machine (JVM). Isto possibilita o uso da característica *Wright Once, Run Anywhere* (WORA) que permite que o mesmo código consiga correr em todos dispositivos em que o Java Runtime Environment (JRE) esteja instalado o que faz com que o programador não tenha que se preocupar com a arquitetura do computador pois todas as operações a baixo nível são processadas pela JVM.
 
 A tecnologia tem várias aplicações possíveis sendo mais utilizada para:
 
