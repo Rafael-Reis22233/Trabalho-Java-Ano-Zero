@@ -3,16 +3,15 @@
 * Versão: 1.0
 * Ultima Modificação: 24-02-2022 15:40
 * */
-import java.awt.*;
-import java.io.FileNotFoundException;
 import java.util.Formatter;
 import java.util.Scanner;
-
+import java.io.FileNotFoundException;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Main {
-  public static void main(String[] args) throws FileNotFoundException {
+  public static void main(String[] args) {
 
     //Constantes
     final int TAMANHO = 50;
@@ -373,17 +372,23 @@ public class Main {
 
   }
 
-  private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) throws FileNotFoundException {
-    Formatter fichFunc = new Formatter("DadosAlunos.txt");
-    for (int x = 0; x < nElems; x++) {
-      if(x == 0) {
-        fichFunc.format("%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
-      }else{
-        fichFunc.format("\n%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+  private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems){
+    try {
+      Formatter fichAlunos = new Formatter("DadosAlunos.txt");
+
+      for (int x = 0; x < nElems; x++) {
+        if(x == 0) {
+          fichAlunos.format("%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+        }else{
+          fichAlunos.format("\n%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+        }
       }
+
+      fichAlunos.close();
+      JOptionPane.showMessageDialog(null, nElems +  " Dado(s) exportado(s)");
+    }catch (FileNotFoundException e){
+      JOptionPane.showMessageDialog(null, "Não foi possivel criar o ficheiro!", "Ficheiro inválido!", JOptionPane.ERROR_MESSAGE);
     }
-    fichFunc.close();
-    JOptionPane.showMessageDialog(null, nElems +  " Dado(s) exportado(s)");
   }
 
   /* Menus e outras necessidades*/
