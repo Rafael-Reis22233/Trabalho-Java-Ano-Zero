@@ -4,7 +4,6 @@
 * Ultima Modificação: 24-02-2022 15:40
 * */
 import java.awt.*;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -416,7 +415,7 @@ public class Main {
 
     int selectedOption = JOptionPane.showOptionDialog(null, panel, "The Title", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[1]);
 
-    return selectedOption != 1;
+    return selectedOption != 1 && selectedOption != -1;
 
   }
 
@@ -425,29 +424,29 @@ public class Main {
     int numIn;
     int numFin;
 
-    String tabela;
+    StringBuilder tabela;
 
     numIn = (pagina * 10) - 10;
 
-    if (numIn + 10 >= nElems){
-      numFin = nElems;
-    }else {
-      numFin = numIn + 10;
-    }
+    numFin = Math.min(numIn + 10, nElems);
 
-    tabela = "<html> <head> <style> table { font-family: arial, sans-serif; border-collapse: collapse; width: 500px; margin-right: 0,} td, th { border: 2px solid #dddddd; text-align: left; margin-right: 0;} tr:nth-child(even) { background-color: #000000; font-weight: bold} </style> </head> <body> <table> <tr> <th>Turma</th> <th>Número</th> <th>Nome</th> <th>Alg</th> <th>Java</th> <th>VB</th> <th>Final</th> </tr>";
+    tabela = new StringBuilder("<html> <head> <style> table { font-family: arial, sans-serif; border-collapse: collapse; width: 500px; margin-right: 0,} td, th { border: 2px solid #dddddd; text-align: left; margin-right: 0;} tr:nth-child(even) { background-color: #000000; font-weight: bold} </style> </head> <body> <table> <tr> <th>Turma</th> <th>Número</th> <th>Nome</th> <th>Alg</th> <th>Java</th> <th>VB</th> <th>Final</th> </tr>");
 
     for (int i = numIn; i < numFin; i++) {
-      tabela += "<tr> <td>"+ turmas[i].trim() +"</td> <td>"+ numeros[i] +"</td> <td>"+ nomes[i].trim() +"</td> <td>"+ algNotas[i] +"</td> <td>"+ javaNotas[i] +"</td> <td>"+ vbNotas[i] +"</td> <td>"+ notaFinal(algNotas[i], javaNotas[i], vbNotas[i], 0.30, 0.40, 0.30) +"</td> </tr>";
+      tabela.append("<tr> <td>").append(turmas[i].trim()).append("</td> <td>").append(numeros[i]).append("</td> <td>").append(nomes[i].trim()).append("</td> <td>").append(algNotas[i]).append("</td> <td>").append(javaNotas[i]).append("</td> <td>").append(vbNotas[i]).append("</td> <td>").append(notaFinal(algNotas[i], javaNotas[i], vbNotas[i])).append("</td> </tr>");
     }
 
-    tabela += "</table> <br><p style='width:100%; text-align: center'> Página - "+ pagina +"</p><br> </body> </html>";
+    tabela.append("</table> <br><p style='width:100%; text-align: center'> Página - ").append(pagina).append("</p><br> </body> </html>");
 
-    return tabela;
+    return tabela.toString();
 
   }
 
-  private static int notaFinal(int algNota, int javaNota, int vbNota, double pAlg, double pJava, double pVb) {
+  private static int notaFinal(int algNota, int javaNota, int vbNota) {
+
+    final double pAlg = 0.30;
+    final double pJava = 0.40;
+    final double pVb = 0.30;
 
     return (int) ((algNota * pAlg) + (javaNota * pJava) + (vbNota * pVb));
 
@@ -508,6 +507,8 @@ public class Main {
 
     int output = -1;
 
+    boolean isNumber = false;
+
     while (output == -1){
 
       if (input == null){
@@ -516,6 +517,9 @@ public class Main {
 
       try {
         output = Integer.parseInt(input);
+
+        isNumber = true;
+
       }catch (NumberFormatException e){
         JOptionPane.showMessageDialog(null, "Nota inválida!", "Falha ao inserir nota", JOptionPane.WARNING_MESSAGE);
 
@@ -526,7 +530,7 @@ public class Main {
         }
       }
 
-      if(output < 0 || output > 20){
+      if(isNumber && (output < 0 || output > 20)){
         output = -1;
 
         JOptionPane.showMessageDialog(null, "Nota inválida!", "Falha ao inserir nota", JOptionPane.WARNING_MESSAGE);
