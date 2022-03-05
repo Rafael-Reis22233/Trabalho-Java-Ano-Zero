@@ -32,6 +32,7 @@ public class Main {
     String[] turmas = new String[TAMANHO];
     String[] nomes = new String[TAMANHO];
 
+    //Programa Principal
     do {
 
       option = menu();
@@ -80,6 +81,7 @@ public class Main {
 
   private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
+    //Variáveis
     String nome;
     String turma = "";
     String aux;
@@ -92,6 +94,7 @@ public class Main {
     boolean isValid = false;
     boolean isCanceled = false;
 
+    //Guarda o nome do aluno se não for cancelado(JOptionPane() quando cancelado retorna null).
     do {
       nome = JOptionPane.showInputDialog(null, "Insira o nome do(a) aluno(a):", "Inserir Aluno",  JOptionPane.PLAIN_MESSAGE);
 
@@ -105,6 +108,7 @@ public class Main {
 
     }while (!isCanceled && nome.equals(""));
 
+    //Guarda a turma do aluno se não for cancelado ou se não tiver sido cancelado anteriormente
     do {
 
       if(!isCanceled){
@@ -121,6 +125,7 @@ public class Main {
 
     } while (!isCanceled && turma.equals(""));
 
+    //Guarda o numero do aluno se não for cancelado ou se não tiver sido cancelado anteriormente
     do {
 
       if (!isCanceled){
@@ -149,6 +154,7 @@ public class Main {
 
     }while (!isCanceled && (checkDigits(numero) != 7 || !isValid));
 
+    //Guarda a nota de algoritmia do aluno se não for cancelado ou se não tiver sido cancelado anteriormente
     if (!isCanceled){
 
       aux = JOptionPane.showInputDialog(null, "Insira a nota de Algoritmia do(a) aluno(a) " + nome + ":", "Inserir Aluno", JOptionPane.PLAIN_MESSAGE);
@@ -164,6 +170,7 @@ public class Main {
       }
     }
 
+    //Guarda a nota de java do aluno se não for cancelado ou se não tiver sido cancelado anteriormente
     if (!isCanceled){
 
       aux = JOptionPane.showInputDialog(null, "Insira a nota de Java do(a) aluno(a) " + nome + ":", "Inserir Aluno", JOptionPane.PLAIN_MESSAGE);
@@ -179,6 +186,7 @@ public class Main {
       }
     }
 
+    //Guarda a nota de visual basic do aluno se não for cancelado ou se não tiver sido cancelado anteriormente
     if (!isCanceled){
 
       aux = JOptionPane.showInputDialog(null, "Insira a nota de Visual Basic do(a) aluno(a) " + nome + ":", "Inserir Aluno", JOptionPane.PLAIN_MESSAGE);
@@ -194,7 +202,9 @@ public class Main {
       }
     }
 
+    //Se não tiver sido cancelado até agora insere o aluno no vetor e incremeta o nElems
     if (!isCanceled){
+      //Inserir os alunos no vetor
       nomes[nElems] = nome;
       turmas[nElems] = turma;
       numeros[nElems] = numero;
@@ -202,24 +212,31 @@ public class Main {
       javaNotas[nElems] = javaNota;
       vbNotas[nElems] = vbNota;
 
+      //Incrementa o nElems
       nElems++;
 
+      //Mostra ao utilizador que o aluno foi inserido
       JOptionPane.showMessageDialog(null, "Aluno(a) inserido(a) com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    //Retorna o nElems para poder ser atualizado no programa principal
     return nElems;
 
   }
 
   private static void verAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
 
+    //Variáveis
     int option;
 
     String[] options;
 
+    //Os botões que são mostrados no fundo da tabela são inseridos num vetor de opções que será utilizado depois no JOptionPane da tabela
     options = new String[] {"Página Anterior", "Página Seguinte","Ordenar Alunos", "Voltar"};
     option = JOptionPane.showOptionDialog(null, tabelaAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina), "Ver Alunos", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
 
+    //As opções retornam uma Integer que corresponde ao indice do vetor das opções.
+    //Caso sejam escolhidas as opções de "Página Anterior", "Página Seguinte" ou "Ordenar Alunos" chama a respetiva função.
     if (option == 0){
       paginaAnterior(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
     }
@@ -236,6 +253,7 @@ public class Main {
 
   private static void ordenarClassificacao(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
+    //Variáveis
     int auxNumero;
     int auxAlgNota;
     int auxJavaNota;
@@ -244,57 +262,72 @@ public class Main {
     String auxNomes;
     String auxTurmas;
 
+    //Um conjunto de loops for é utilizado para comparar e trocar quando necessário as entradas dos u«alunos nos vetores
     for (int i = 0; i < nElems; i++) {
       for (int j = i + 1; j < nElems; j++) {
+        //Ordena os alunos por ordem crescente de turma
         if(turmas[j].compareToIgnoreCase(turmas[i]) < 0){
 
+          //Troca os nomes dos alunos
           auxNomes = nomes[i];
           nomes[i] = nomes[j];
           nomes[j] = auxNomes;
 
+          //Troca as turmas dos alunos
           auxTurmas = turmas[i];
           turmas[i] = turmas[j];
           turmas[j] = auxTurmas;
 
+          //Troca o numero dos alunos
           auxNumero = numeros[i];
           numeros[i] = numeros[j];
           numeros[j] = auxNumero;
 
+          //Troca a nota de Algoritmia dos alunos
           auxAlgNota = algNotas[i];
           algNotas[i] = algNotas[j];
           algNotas[j] = auxAlgNota;
 
+          //Troca a nota de Java dos alunos
           auxJavaNota = javaNotas[i];
           javaNotas[i] = javaNotas[j];
           javaNotas[j] = auxJavaNota;
 
+          //Troca a nota de Visual Basic dos alunos
           auxVbNota = vbNotas[i];
           vbNotas[i] = vbNotas[j];
           vbNotas[j] = auxVbNota;
         }
 
+        //Se as turmas forem iguais oredena por ordem crescente de numero
         if (numeros[i] > numeros[j] && turmas[j].compareToIgnoreCase(turmas[i]) == 0){
 
+          //Troca os nomes dos alunos
           auxNomes = nomes[i];
           nomes[i] = nomes[j];
           nomes[j] = auxNomes;
 
+          //Troca as turmas dos alunos
           auxTurmas = turmas[i];
           turmas[i] = turmas[j];
           turmas[j] = auxTurmas;
 
+          //Troca o numero dos alunos
           auxNumero = numeros[i];
           numeros[i] = numeros[j];
           numeros[j] = auxNumero;
 
+          //Troca a nota de Algoritmia dos alunos
           auxAlgNota = algNotas[i];
           algNotas[i] = algNotas[j];
           algNotas[j] = auxAlgNota;
 
+          //Troca a nota de Java dos alunos
           auxJavaNota = javaNotas[i];
           javaNotas[i] = javaNotas[j];
           javaNotas[j] = auxJavaNota;
 
+          //Troca a nota de Visual Basic dos alunos
           auxVbNota = vbNotas[i];
           vbNotas[i] = vbNotas[j];
           vbNotas[j] = auxVbNota;
@@ -303,6 +336,7 @@ public class Main {
       }
     }
 
+    //Chama a função verAlunos() para mostrar a tabela ordenada
     verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
 
   }
@@ -394,16 +428,21 @@ public class Main {
   /* Menus e outras necessidades*/
   public static String menu() {
 
-    String[] options = {"Inserir Aluno", "Atualizar Informação", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
-
+    //Variáveis
     String selectedOption;
 
+    //Vetores
+    String[] options = {"Inserir Aluno", "Atualizar Informação", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
+
+    //Mostra o drop-down do menu com as opções inseridas no vetor acima. Retorna uma String com o valor da opção que foi escolhida
     selectedOption = (String) JOptionPane.showInputDialog(null, "Selecione o que pretende fazer:\n\n", "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
+    //Se o utilizador carregar no cancelar, a função Menu() envia a opção "Sair" para mostrar o menu de saída.
     if (selectedOption == null){
       return "Sair";
     }
 
+    //Se o utilizador não tiver cancelado retorna a opção que foi selecionada.
     return selectedOption;
 
 
@@ -411,72 +450,93 @@ public class Main {
 
   private static boolean exitMenu() {
 
+    //Vetores
     String[] options = {"Sim", "Não"};
 
+    //Componentes Java Swing
     JLabel lbl = new JLabel("Quer mesmo sair?");
 
     JPanel panel = new JPanel();
     panel.add(lbl);
 
-    int selectedOption = JOptionPane.showOptionDialog(null, panel, "The Title", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[1]);
+    //Mostra um JOptionPane para confirmar que o utilizador quer mesmo sair que retorna o indice do vetor das opções ou -1 se for cancelado
+    int selectedOption = JOptionPane.showOptionDialog(null, panel, "Sair", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[1]);
 
+    //Se o utilizador tiver cancelado ou selecionado "Não" retorna false senão retorna true e sai do programa
     return selectedOption != 1 && selectedOption != -1;
 
   }
 
   private static String tabelaAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina){
 
+    //Variáveis
     int numIn;
     int numFin;
 
     StringBuilder tabela;
 
+    //Define primeiro indice da página
     numIn = (pagina * 10) - 10;
 
+    //Define o ultimo indice da página
     numFin = Math.min(numIn + 10, nElems);
 
+    //Adiciona o inicio de uma tabela HTML com estilização e cabeçalho
     tabela = new StringBuilder("<html> <head> <style> table { font-family: arial, sans-serif; border-collapse: collapse; width: 500px; margin-right: 0,} td, th { border: 2px solid #dddddd; text-align: left; margin-right: 0;} tr:nth-child(even) { background-color: #000000; font-weight: bold} </style> </head> <body> <table> <tr> <th>Turma</th> <th>Número</th> <th>Nome</th> <th>Alg</th> <th>Java</th> <th>VB</th> <th>Final</th> </tr>");
 
+    //Adiciona á tabela uma nova fila com os dados do aluno corespondente ao indice do loop for
     for (int i = numIn; i < numFin; i++) {
       tabela.append("<tr> <td>").append(turmas[i].trim()).append("</td> <td>").append(numeros[i]).append("</td> <td>").append(nomes[i].trim()).append("</td> <td>").append(algNotas[i]).append("</td> <td>").append(javaNotas[i]).append("</td> <td>").append(vbNotas[i]).append("</td> <td>").append(notaFinal(algNotas[i], javaNotas[i], vbNotas[i])).append("</td> </tr>");
     }
 
+    //Adiciona o fim de uma tabela HTML e o numero da página no centro
     tabela.append("</table> <br><p style='width:100%; text-align: center'> Página - ").append(pagina).append("</p><br> </body> </html>");
 
+    //Retorna a tabela construida
     return tabela.toString();
 
   }
 
   private static int notaFinal(int algNota, int javaNota, int vbNota) {
 
+    //Variáveis
     final double pAlg = 0.30;
     final double pJava = 0.40;
     final double pVb = 0.30;
 
+    //Calcula a nota final do aluno e retorna-a
     return (int) ((algNota * pAlg) + (javaNota * pJava) + (vbNota * pVb));
 
   }
 
   private static void paginaAnterior(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
+
+    //Verifica se está na primeira página. Caso não esteja anda uma página para trás, senão continua na primeira. No final mostra a tabela na página escolhida.
     if (pagina != 1){
       verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, (pagina - 1));
     }else{
       verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
     }
+
   }
 
   private static void paginaSeguinte(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
+
+    //Verifica se está na ultima página. Caso não esteja anda uma página para a frente, senão continua na ultima. No final mostra a tabela na página escolhida.
     if(pagina != Math.ceil((double) nElems/10 )){
       verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, (pagina + 1));
     }else {
       verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
     }
+
   }
 
   private static int checkNumber(String input, String nome) {
 
+    //Variáveis
     int output = -1;
 
+    //Recebe uma string da inserção do numero. Se conseguir converter para Integer retorna o numero, senão pede o numero outra vez.
     while (output == -1){
       try {
         output = Integer.parseInt(input);
@@ -485,12 +545,14 @@ public class Main {
 
         input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) " + nome + ":", "", JOptionPane.PLAIN_MESSAGE);
 
+        //Se o utilizador cancelar retorna -2
         if (input == null){
           return -2;
         }
 
       }
 
+      //Se o numero for negativo pede o numero outra vez
       if(output < -1){
         output = -1;
 
@@ -498,24 +560,29 @@ public class Main {
 
         input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) " + nome + ":", "", JOptionPane.PLAIN_MESSAGE);
 
+        //Se o utilizador cancelar retorna -2
         if (input == null){
           return -2;
         }
       }
     }
 
+    //Quando o utilizador introduzir um numero válido retorna-o
     return output;
 
   }
 
   private static int checkNota(String input, String nome, String notaNome) {
 
+    //Variáveis
     int output = -1;
 
     boolean isNumber = false;
 
+    //Recebe uma string da inserção da nota. Se conseguir converter para Integer retorna a nota, senão pede a nota outra vez.
     while (output == -1){
 
+      //Se o utilizador cancelar retorna -1
       if (input == null){
         return -1;
       }
@@ -530,17 +597,20 @@ public class Main {
 
         input = JOptionPane.showInputDialog(null, "Insira a nota de "+ notaNome +" do(a) aluno(a) " + nome + ":", "", JOptionPane.PLAIN_MESSAGE);
 
+        //Se o utilizador cancelar retorna -1
         if (input == null){
           return -1;
         }
       }
 
+      //Se for um numero e não for uma nota válida (0-20) pede a nota outra vez
       if(isNumber && (output < 0 || output > 20)){
         output = -1;
 
         JOptionPane.showMessageDialog(null, "Nota inválida!", "Falha ao inserir nota", JOptionPane.WARNING_MESSAGE);
         input = JOptionPane.showInputDialog(null, "Insira a nota de "+ notaNome +" do(a) aluno(a) " + nome + ":", "", JOptionPane.PLAIN_MESSAGE);
 
+        //Se o utilizador cancelar retorna -1
         if (input == null){
           return -1;
         }
@@ -548,18 +618,23 @@ public class Main {
 
     }
 
+    //Quando for introduzida uma nota válida retorna-a
     return output;
 
   }
 
   private static int checkDigits(int num){
+
+    //Variáveis
     int count = 0;
 
+    //Conta o numero de digitos de um numero
     while (num != 0) {
       num /= 10;
       count++;
     }
 
+    //Retorna o numero de digitos contado
     return count;
 
   }
