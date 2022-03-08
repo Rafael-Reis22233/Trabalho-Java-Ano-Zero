@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.ColorUIResource;
 
 public class Main {
   public static void main(String[] args) {
@@ -34,6 +35,13 @@ public class Main {
     String[] nomes = new String[TAMANHO];
 
     //Programa Principal
+
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     do {
 
       option = menu();
@@ -48,8 +56,11 @@ public class Main {
           break;
 
         case "Atualizar Informação":
-          System.out.println("ATUALIZAR");
-          //TODO: atualizarAluno()
+          if (nElems != 0){
+            atualizarAluno(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
+          }else{
+            JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
+          }
           break;
 
         case "Ver Alunos":
@@ -222,6 +233,12 @@ public class Main {
 
     //Retorna o nElems para poder ser atualizado no programa principal
     return nElems;
+
+  }
+
+  private static void atualizarAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    JOptionPane.showMessageDialog(null, "Atualizar Aluno", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
 
   }
 
