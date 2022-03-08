@@ -74,8 +74,8 @@ public class Main {
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
-        
-          case 3:
+
+        case 3:
           if (nElems > 0){
             if (apagarAluno(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems)) {
               JOptionPane.showMessageDialog(null, "Aluno eliminado");
@@ -263,7 +263,9 @@ public class Main {
 
   private static void atualizarAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
-    JOptionPane.showMessageDialog(null, "Atualizar Aluno", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+    int numero = checkNumberUpdate( JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar!", JOptionPane.PLAIN_MESSAGE));
+
+    System.out.println(numero);
 
   }
 
@@ -516,7 +518,8 @@ public class Main {
   public static int menu() {
 
     //Variáveis
-    int selectedOption;
+    int selectedOption = -1;
+    int result;
 
     //Vetores
     String[] options = {"Inserir Aluno", "Atualizar Informação", "Apagar Aluno", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
@@ -525,17 +528,19 @@ public class Main {
     JComboBox optionBox = new JComboBox(options);
 
     //Mostra o drop-down do menu com as opções inseridas no vetor acima. Retorna uma String com o valor da opção que foi escolhida
-    JOptionPane.showMessageDialog(null, optionBox, "Menu", JOptionPane.PLAIN_MESSAGE);
+    result = JOptionPane.showConfirmDialog(null, optionBox, "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-    selectedOption = optionBox.getSelectedIndex();
+    if(result != JOptionPane.CLOSED_OPTION){
+      selectedOption = optionBox.getSelectedIndex();
+    }
 
     //Se o utilizador carregar no cancelar, a função Menu() envia a opção "Sair" para mostrar o menu de saída.
-    if (selectedOption == options.length-1){
+    if (selectedOption == options.length-1 || selectedOption == -1){
       return 0;
     }
 
     //Se o utilizador não tiver cancelado retorna a opção que foi selecionada.
-    return selectedOption;
+    return selectedOption + 1;
 
 
   }
@@ -651,6 +656,47 @@ public class Main {
         JOptionPane.showMessageDialog(null, "Numero inválido!", "Falha ao inserir numero", JOptionPane.WARNING_MESSAGE);
 
         input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) " + nome + ":", "", JOptionPane.PLAIN_MESSAGE);
+
+        //Se o utilizador cancelar retorna -2
+        if (input == null){
+          return -2;
+        }
+      }
+    }
+
+    //Quando o utilizador introduzir um numero válido retorna-o
+    return output;
+
+  }
+
+  private static int checkNumberUpdate(String input) {
+
+    //Variáveis
+    int output = -1;
+
+    //Recebe uma string da inserção do numero. Se conseguir converter para Integer retorna o numero, senão pede o numero outra vez.
+    while (output == -1){
+      try {
+        output = Integer.parseInt(input);
+      }catch (NumberFormatException e){
+        JOptionPane.showMessageDialog(null, "Numero inválido!", "O numero que inseriu não é válido!", JOptionPane.WARNING_MESSAGE);
+
+        input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar!", JOptionPane.PLAIN_MESSAGE);
+
+        //Se o utilizador cancelar retorna -2
+        if (input == null){
+          return -2;
+        }
+
+      }
+
+      //Se o numero for negativo pede o numero outra vez
+      if(output < -1){
+        output = -1;
+
+        JOptionPane.showMessageDialog(null, "Numero inválido!", "Falha ao inserir numero", JOptionPane.WARNING_MESSAGE);
+
+        input =  JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar!", JOptionPane.PLAIN_MESSAGE);
 
         //Se o utilizador cancelar retorna -2
         if (input == null){
