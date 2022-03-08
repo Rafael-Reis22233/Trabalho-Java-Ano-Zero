@@ -74,8 +74,21 @@ public class Main {
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
+        
+          case 3:
+          if (nElems > 0){
+            if (apagarAluno(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems)) {
+              JOptionPane.showMessageDialog(null, "Aluno eliminado");
+              nElems--;
+            } else {
+              JOptionPane.showMessageDialog(null, "Não há qualquer aluno com o número introduzido ");
+            }
+          } else {
+            JOptionPane.showMessageDialog(null, "Não existem alunos");
+          }
+          break;
 
-        case 3:
+        case 4:
           if (nElems > 0){
             verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
           }else {
@@ -252,6 +265,12 @@ public class Main {
 
     JOptionPane.showMessageDialog(null, "Atualizar Aluno", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
 
+  }
+
+  private static boolean apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+
+    return false;
   }
 
   private static void verAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
