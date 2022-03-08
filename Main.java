@@ -20,7 +20,8 @@ public class Main {
 
     //Variaveis
     int nElems = 0;
-    int option;
+
+    String option;
 
     boolean exit = false;
 
@@ -37,19 +38,6 @@ public class Main {
 
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-      UIManager.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-      UIManager.put("ToggleButton.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-
-      // ways to remove it from other controls...
-      UIManager.put("CheckBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-      UIManager.put("TabbedPane.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-      UIManager.put("RadioButton.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-      UIManager.put("Slider.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-
-      // figure out combobox
-      UIManager.put("ComboBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -59,7 +47,7 @@ public class Main {
       option = menu();
 
       switch (option){
-        case 1:
+        case "Inserir Aluno":
           if(nElems < TAMANHO){
             nElems = inserirAluno(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
           }else {
@@ -67,7 +55,7 @@ public class Main {
           }
           break;
 
-        case 2:
+        case "Atualizar Informação":
           if (nElems != 0){
             atualizarAluno(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
           }else{
@@ -75,7 +63,7 @@ public class Main {
           }
           break;
 
-        case 3:
+        case "Ver Alunos":
           if (nElems > 0){
             verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
           }else {
@@ -83,7 +71,7 @@ public class Main {
           }
           break;
 
-        case 5:
+        case "Carregar Alunos":
           if(nElems < numeros.length){
             nElems = importarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           }else {
@@ -91,7 +79,7 @@ public class Main {
           }
             break;
 
-        case 6:
+        case "Exportar Alunos":
           exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
 
@@ -494,25 +482,20 @@ public class Main {
   }
 
   /* Menus e outras necessidades*/
-  public static int menu() {
+  public static String menu() {
 
     //Variáveis
-    int selectedOption;
+    String selectedOption;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Atualizar Informação", "Apagar Aluno", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
-
-
-    JComboBox optionBox = new JComboBox(options);
+    String[] options = {"Inserir Aluno", "Atualizar Informação", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
 
     //Mostra o drop-down do menu com as opções inseridas no vetor acima. Retorna uma String com o valor da opção que foi escolhida
-    JOptionPane.showMessageDialog(null, optionBox, "Menu", JOptionPane.PLAIN_MESSAGE);
-
-    selectedOption = optionBox.getSelectedIndex();
+    selectedOption = (String) JOptionPane.showInputDialog(null, "Selecione o que pretende fazer:\n\n", "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
     //Se o utilizador carregar no cancelar, a função Menu() envia a opção "Sair" para mostrar o menu de saída.
-    if (selectedOption == options.length-1){
-      return 0;
+    if (selectedOption == null){
+      return "Sair";
     }
 
     //Se o utilizador não tiver cancelado retorna a opção que foi selecionada.
