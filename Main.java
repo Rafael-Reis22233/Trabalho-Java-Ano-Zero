@@ -3,6 +3,7 @@
 * Versão: 1.0
 * Ultima Modificação: 24-02-2022 15:40
 * */
+import java.io.File;
 import java.util.Formatter;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
@@ -353,7 +354,7 @@ public class Main {
     try {
 
       do {
-        file.setDialogTitle("Ficheiro com alunos");
+        file.setDialogTitle("Importar Alunos");
         file.setDialogType(JFileChooser.OPEN_DIALOG);
         file.setAcceptAllFileFilterUsed(false);
         file.setPreferredSize(new Dimension(700, 500));
@@ -407,21 +408,59 @@ public class Main {
   }
 
   private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems){
-    try {
-      Formatter fichAlunos = new Formatter("DadosAlunos.txt");
 
-      for (int x = 0; x < nElems; x++) {
-        if(x == 0) {
-          fichAlunos.format("%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
-        }else{
-          fichAlunos.format("\n%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
-        }
+    int canceled;
+
+    boolean isCanceled = false;
+    boolean isSet = false;
+
+    File file = null;
+
+    JFileChooser fileChooser = new JFileChooser();
+
+    do {
+      fileChooser.setDialogTitle("Exportar Alunos");
+      fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+      fileChooser.setAcceptAllFileFilterUsed(false);
+      fileChooser.setPreferredSize(new Dimension(700, 500));
+      fileChooser.setSelectedFile(new File("alunos.txt"));
+
+      fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Ficheiros de Texto (.txt)", "txt"));
+
+      canceled = fileChooser.showSaveDialog(null);
+
+      if (canceled == JFileChooser.CANCEL_OPTION){
+        isCanceled = true;
       }
 
-      fichAlunos.close();
-      JOptionPane.showMessageDialog(null, nElems +  " Dado(s) exportado(s)");
-    }catch (FileNotFoundException e){
-      JOptionPane.showMessageDialog(null, "Não foi possivel criar o ficheiro!", "Ficheiro inválido!", JOptionPane.ERROR_MESSAGE);
+      if(checkValidFile(fileChooser.getSelectedFile().toString()) == 2 && fileChooser.getSelectedFile() != null){
+        file = new File(fileChooser.getSelectedFile().toString() + ".txt");
+        isSet = true;
+      }
+
+    }while (fileChooser.getSelectedFile() == null && !isCanceled && checkValidFile(fileChooser.getSelectedFile().toString()) == -1);
+
+    if (!isSet && !isCanceled){
+      file = fileChooser.getSelectedFile();
+    }
+
+    if(!isCanceled){
+      try {
+        Formatter fichAlunos = new Formatter(file);
+
+        for (int x = 0; x < nElems; x++) {
+          if(x == 0) {
+            fichAlunos.format("%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+          }else{
+            fichAlunos.format("\n%s:%d:%s:%d:%d:%d", turmas[x], numeros[x], nomes[x], algNotas[x], javaNotas[x], vbNotas[x]);
+          }
+        }
+
+        fichAlunos.close();
+        JOptionPane.showMessageDialog(null, nElems +  " Dado(s) exportado(s)");
+      }catch (FileNotFoundException e){
+        JOptionPane.showMessageDialog(null, "Não foi possivel criar o ficheiro!", "Ficheiro inválido!", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 
@@ -636,6 +675,19 @@ public class Main {
 
     //Retorna o numero de digitos contado
     return count;
+
+  }
+
+  private static int checkValidFile(String saveFilePath) {
+
+    if (!saveFilePath.endsWith(".txt")){
+      if (saveFilePath.endsWith("/")){
+        return -1;
+      }else {
+        return 2;
+      }
+    }
+    return 1;
 
   }
 
