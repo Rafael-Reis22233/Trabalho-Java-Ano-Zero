@@ -75,7 +75,7 @@ public class Main {
           }
           break;
 
-        case 3:
+        case 4:
           if (nElems > 0){
             verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
           }else {
