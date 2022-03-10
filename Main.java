@@ -376,10 +376,15 @@ public class Main {
 
     numero = JOptionPane.showInputDialog(null, "Qual o número do aluno que pretende eliminar", "Apagar Aluno", JOptionPane.PLAIN_MESSAGE);
     pos = pesquisar(numeros, nElems, Integer.parseInt(numero));
-
+    
     if (pos != -1) {
       for (int x = pos; x < nElems - 1; x++) {
+        numeros[x] = numeros[x + 1];
         nomes[x] = nomes[x + 1];
+        turmas[x] = turmas[x + 1];
+        algNotas[x] = algNotas[x + 1];
+        javaNotas[x] = javaNotas[x + 1];
+        vbNotas[x] = vbNotas[x + 1];
       }
       return true;
     } else {
