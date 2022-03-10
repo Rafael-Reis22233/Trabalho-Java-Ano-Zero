@@ -371,9 +371,20 @@ public class Main {
   }
 
   private static boolean apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+    String numero;
+    int pos;
 
+    numero = JOptionPane.showInputDialog("Qual o número do aluno que pretende eliminar");
+    pos = pesquisar(numeros, nElems, Integer.parseInt(numero));
 
-    return false;
+    if (pos != -1) {
+      for (int x = pos; x < nElems - 1; x++) {
+        nomes[x] = nomes[x + 1];
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private static void verAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
@@ -894,7 +905,6 @@ public class Main {
       }
     }
     return 1;
-
   }
 
   private static int pesquisar(int[] numeros, int nElems, int numero) {
