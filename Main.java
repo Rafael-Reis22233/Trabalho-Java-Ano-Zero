@@ -1,7 +1,7 @@
 /*
  * Desenvolvido por: Grupo 4 "Os Grandes"
  * Versão: 1.0
- * Ultima Modificação: 24-02-2022 15:40
+ * Ultima Modificação: 10-03-2022 19:45
  * */
 import java.io.File;
 import java.util.Formatter;
@@ -77,9 +77,9 @@ public class Main {
           break;
 
         case 3:
-          if (nElems != 0){
-            atualizarInfo(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
-          }else{
+          if (nElems > 0){
+            verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+          }else {
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
@@ -96,9 +96,9 @@ public class Main {
           break;
 
         case 5:
-          if (nElems > 0){
-            verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
-          }else {
+          if (nElems != 0){
+            atualizarInfo(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
+          }else{
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
@@ -268,13 +268,9 @@ public class Main {
 
   }
 
-  private static void atualizarInfo(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
-    System.out.println("ATUALIZAR INFORMAÇÃO!");
-  }
-
-
   private static void editarAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
+    //Variáveis
     int numPos;
     int option;
     int auxInt;
@@ -286,25 +282,30 @@ public class Main {
     String msg;
     String auxString;
 
+    //Vetores
     Object[] msgContent;
     Object[] newContent;
 
+    //Componentes Java Swing
     JCheckBox[] camposEditar = {new JCheckBox("Nome"), new JCheckBox("Turma"), new JCheckBox("Numero"), new JCheckBox("Nota de Algoritmia"), new JCheckBox("Nota de Java"), new JCheckBox("Nota de Visual Basic")};
 
+    //Recebe o numero do aluno que se pretende editar
     numPos = checkNumberUpdate(JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende editar:", "Editar",JOptionPane.PLAIN_MESSAGE), numeros, nElems);
 
+    //Se o aluno existir edita-o
     if(numPos != -1){
 
+      //Cria a mensagem com as checkboxes para editar apenas os campos que são pretendidos
       msg = "Que campos pretende editar:";
-
       msgContent = new Object[] {msg, camposEditar};
-
       option = JOptionPane.showConfirmDialog ( null,  msgContent,  "Editar", JOptionPane.OK_CANCEL_OPTION);
 
+      //Se o utilizador nao tiver cancelado cria um vetor com o conteudo antigo que vai ser alterado para dar a opção ao utilizador para cancelar.
       if(option == JOptionPane.OK_OPTION){
 
         newContent = new Object[] {nomes[numPos], turmas[numPos], numeros[numPos], algNotas[numPos], javaNotas[numPos], vbNotas[numPos]};
 
+        //Se o utilizador tiver escolhido alterar o nome pede o novo valor
         if (camposEditar[0].isSelected()){
           do{
             auxString = JOptionPane.showInputDialog(null, "Insira o novo nome para o(a) aluno(a) '"+ newContent[0] +"':", "Editar Nome", JOptionPane.PLAIN_MESSAGE);
@@ -339,6 +340,7 @@ public class Main {
           }
         }
 
+        //Se o utilizador tiver escolhido alterar o numero pede o novo valor
         if (camposEditar[2].isSelected()){
           if(!isCanceled){
             do {
@@ -382,6 +384,7 @@ public class Main {
           }
         }
 
+        //Se o utilizador tiver escolhido alterar a nota de algoritmia pede o novo valor
         if (camposEditar[3].isSelected()){
 
           isValid = false;
@@ -396,10 +399,8 @@ public class Main {
 
                 auxInt = checkNota(auxString, newContent[0].toString(), "Algoritmia");
 
-                System.out.println(auxInt);
-
                 if (auxInt != -1){
-                  newContent[3] = auxString;
+                  newContent[3] = auxInt;
                   isValid = true;
                 }else {
                   isCanceled = true;
@@ -409,6 +410,7 @@ public class Main {
           }
         }
 
+        //Se o utilizador tiver escolhido alterar a nota de java pede o novo valor
         if (camposEditar[4].isSelected()){
           isValid = false;
 
@@ -433,6 +435,7 @@ public class Main {
           }
         }
 
+        //Se o utilizador tiver escolhido alterar a nota de visual basic pede o novo valor
         if (camposEditar[5].isSelected()){
           isValid = false;
 
@@ -457,14 +460,51 @@ public class Main {
           }
         }
 
-        System.out.println("----------");
-        for (Object obj: newContent) {
-          System.out.println(obj);
-        }
-        System.out.println("----------");
+        //Quando o utilizador tivre acabado de inserir os novos valores insere-os nos vetores originais e mostra uma mensagem ao utilizador.
+        if(!isCanceled){
+          nomes[numPos] = newContent[0].toString();
+          turmas[numPos] = newContent[1].toString().toUpperCase();
+          numeros[numPos] = Integer.parseInt(newContent[2].toString());
+          algNotas[numPos] = Integer.parseInt(newContent[3].toString());
+          javaNotas[numPos] = Integer.parseInt(newContent[4].toString());
+          vbNotas[numPos] = Integer.parseInt(newContent[5].toString());
 
+          JOptionPane.showMessageDialog(null, "Aluno editado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+        }
       }
     }
+  }
+
+  private static void verAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
+
+    //Variáveis
+    int option;
+
+    //Vetores
+    String[] options;
+
+    //Os botões que são mostrados no fundo da tabela são inseridos num vetor de opções que será utilizado depois no JOptionPane da tabela
+    options = new String[] {"Página Anterior", "Página Seguinte","Ordenar Alunos", "Voltar"};
+    option = JOptionPane.showOptionDialog(null, tabelaAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina), "Ver Alunos", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+
+    //As opções retornam uma Integer que corresponde ao indice do vetor das opções.
+    //Caso sejam escolhidas as opções de "Página Anterior", "Página Seguinte" ou "Ordenar Alunos" chama a respetiva função.
+    if (option == 0){
+      paginaAnterior(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
+    }
+
+    if (option == 1){
+      paginaSeguinte(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
+    }
+
+    if(option == 2){
+      ordenarClassificacao(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+
+  }
+
+  private static void atualizarInfo(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+    System.out.println("ATUALIZAR INFORMAÇÃO!");
   }
 
   private static int apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
@@ -498,33 +538,6 @@ public class Main {
       return 1;
     }else {
       return 0;
-    }
-
-  }
-
-  private static void verAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
-
-    //Variáveis
-    int option;
-
-    String[] options;
-
-    //Os botões que são mostrados no fundo da tabela são inseridos num vetor de opções que será utilizado depois no JOptionPane da tabela
-    options = new String[] {"Página Anterior", "Página Seguinte","Ordenar Alunos", "Voltar"};
-    option = JOptionPane.showOptionDialog(null, tabelaAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina), "Ver Alunos", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
-
-    //As opções retornam uma Integer que corresponde ao indice do vetor das opções.
-    //Caso sejam escolhidas as opções de "Página Anterior", "Página Seguinte" ou "Ordenar Alunos" chama a respetiva função.
-    if (option == 0){
-      paginaAnterior(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
-    }
-
-    if (option == 1){
-      paginaSeguinte(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, pagina);
-    }
-
-    if(option == 2){
-      ordenarClassificacao(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
 
   }
@@ -749,17 +762,20 @@ public class Main {
     int result;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Editar Aluno","Atualizar Dados", "Apagar Aluno", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
+    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Sair"};
 
     Object[] msg;
 
+    //Componentes Java Swing
     JComboBox optionBox = new JComboBox(options);
 
+    //Criar a mensagem do JOptionPane com as opções
     msg = new Object[]{"Selecione o que pretende fazer:", optionBox};
 
     //Mostra o drop-down do menu com as opções inseridas no vetor acima. Retorna uma String com o valor da opção que foi escolhida
     result = JOptionPane.showConfirmDialog(null, msg, "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
 
+    //Se o utilizador não tiver fechado a janela verifica que opção foi escolhida
     if(result != JOptionPane.CLOSED_OPTION){
       selectedOption = optionBox.getSelectedIndex();
     }
@@ -919,6 +935,7 @@ public class Main {
 
         }
 
+        //Quando a output é um numero, verifica se o numero tem 7 digitos caso tenha verifica se ja esta inserido. Se não estivre inserido retorna -1
         if (output != -1 && checkDigits(output) != 7) {
           output = -1;
 
@@ -953,6 +970,7 @@ public class Main {
     //Recebe uma string da inserção da nota. Se conseguir converter para Integer retorna a nota, senão pede a nota outra vez.
     while (output == -1){
 
+      //Põe a flag a falso para refazer a verificação
       isNumber = false;
 
       //Se o utilizador cancelar retorna -1
@@ -1014,6 +1032,7 @@ public class Main {
 
   private static int checkValidFile(String saveFilePath) {
 
+    //Se o ficheiro não acabar com ".txt" retorna 2 se for uma pasta retorna -1 para o valor poder ser tratado na funçaõ exportarDados()
     if (!saveFilePath.endsWith(".txt")){
       if (saveFilePath.endsWith("/")){
         return -1;
