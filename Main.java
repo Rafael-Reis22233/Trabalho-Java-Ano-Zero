@@ -4,7 +4,9 @@
  * Ultima Modificação: 24-02-2022 15:40
  * */
 import java.io.File;
+import java.util.Arrays;
 import java.util.Formatter;
+import java.util.Objects;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.awt.*;
@@ -263,10 +265,109 @@ public class Main {
 
   private static void atualizarAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
-    int numero = checkNumberUpdate( JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar!", JOptionPane.PLAIN_MESSAGE));
+    int numPos;
+    int option;
+    int auxInt;
 
-    System.out.println(numero);
+    boolean isCanceled = false;
+    boolean isValid = false;
 
+    String msg;
+    String auxString;
+
+    Object[] msgContent;
+    Object[] newContent;
+
+    JCheckBox[] camposEditar = {new JCheckBox("Nome"), new JCheckBox("Turma"), new JCheckBox("Numero"), new JCheckBox("Nota de Algoritmia"), new JCheckBox("Nota de Java"), new JCheckBox("Nota de Visual Basic")};
+
+    numPos = checkNumberUpdate(JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar:", "Atualizar",JOptionPane.PLAIN_MESSAGE), numeros, nElems);
+
+    if(numPos != -1){
+
+      msg = "Que campos pretende atualizar:";
+
+      msgContent = new Object[] {msg, camposEditar};
+
+      option = JOptionPane.showConfirmDialog ( null,  msgContent,  "Atualizar", JOptionPane.OK_CANCEL_OPTION);
+
+      if(option == JOptionPane.OK_OPTION){
+
+        newContent = new Object[] {nomes[numPos], turmas[numPos], numeros[numPos], algNotas[numPos], javaNotas[numPos], vbNotas[numPos]};
+
+        if (camposEditar[0].isSelected()){
+          do{
+            auxString = JOptionPane.showInputDialog("Insira o novo nome para o(a) aluno(a) '"+ newContent[0] +"':");
+
+            if(auxString != null){
+              auxString.trim();
+              if (!auxString.equals("")){
+                newContent[0] = auxString;
+              }else {
+                JOptionPane.showMessageDialog(null, "Por favor preencha o campo do nome!", "Nome inválido!", JOptionPane.WARNING_MESSAGE);
+              }
+            }
+          }while (Objects.equals(auxString, ""));
+        }
+
+        if (camposEditar[1].isSelected()){
+          if (!isCanceled){
+            do{
+              auxString = JOptionPane.showInputDialog("Insira a turma  do(a) aluno(a) '"+ newContent[0] +"':");
+
+              if(auxString != null){
+                auxString.trim();
+                if (!auxString.equals("")){
+                  newContent[0] = auxString;
+                }else {
+                  JOptionPane.showMessageDialog(null, "Por favor preencha o campo da turma!", "Turma inválida!", JOptionPane.WARNING_MESSAGE);
+                }
+              }
+            }while (Objects.equals(auxString, ""));
+          }
+        }
+
+        if (camposEditar[2].isSelected()){
+          if(!isCanceled){
+            do {
+              auxString = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) '"+ newContent[0] +"':", "", JOptionPane.PLAIN_MESSAGE);
+
+              if(auxString == null){
+                isCanceled = true;
+              }else {
+
+                auxInt = checkNumber(auxString, newContent[0].toString());
+
+                if (auxInt != -2){
+                  if(pesquisar(numeros, nElems, auxInt) != -1){
+                    JOptionPane.showMessageDialog(null, "O aluno que está a tentar inserir já se econtra guardado!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
+                  }
+
+                  if (checkDigits(auxInt) != 7){
+                    JOptionPane.showMessageDialog(null, "Por favor introduza um numero válido!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
+                  }else {
+                    isValid = true;
+                  }
+                }else {
+                  isCanceled = true;
+                }
+              }
+            }while (!isValid);
+          }
+        }
+
+        if (camposEditar[3].isSelected()){
+          System.out.println("EDITAR NOTA ALG");
+        }
+
+        if (camposEditar[4].isSelected()){
+          System.out.println("EDITAR NOTA JAVA");
+        }
+
+        if (camposEditar[5].isSelected()){
+          System.out.println("EDITAR NOTA VB");
+        }
+      }
+    }
   }
 
   private static boolean apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
@@ -524,11 +625,14 @@ public class Main {
     //Vetores
     String[] options = {"Inserir Aluno", "Atualizar Informação", "Apagar Aluno", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
 
+    Object[] msg;
 
     JComboBox optionBox = new JComboBox(options);
 
+    msg = new Object[]{"Selecione o que pretende fazer:", optionBox};
+
     //Mostra o drop-down do menu com as opções inseridas no vetor acima. Retorna uma String com o valor da opção que foi escolhida
-    result = JOptionPane.showConfirmDialog(null, optionBox, "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+    result = JOptionPane.showConfirmDialog(null, msg, "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
 
     if(result != JOptionPane.CLOSED_OPTION){
       selectedOption = optionBox.getSelectedIndex();
@@ -650,7 +754,7 @@ public class Main {
       }
 
       //Se o numero for negativo pede o numero outra vez
-      if(output < -1){
+      if(output <= -1){
         output = -1;
 
         JOptionPane.showMessageDialog(null, "Numero inválido!", "Falha ao inserir numero", JOptionPane.WARNING_MESSAGE);
@@ -669,44 +773,47 @@ public class Main {
 
   }
 
-  private static int checkNumberUpdate(String input) {
+  private static int checkNumberUpdate(String input, int[] numeros, int nElems) {
 
     //Variáveis
     int output = -1;
 
     //Recebe uma string da inserção do numero. Se conseguir converter para Integer retorna o numero, senão pede o numero outra vez.
-    while (output == -1){
-      try {
-        output = Integer.parseInt(input);
-      }catch (NumberFormatException e){
-        JOptionPane.showMessageDialog(null, "Numero inválido!", "O numero que inseriu não é válido!", JOptionPane.WARNING_MESSAGE);
+    while (output == -1) {
+      if (input != null){
+        try {
+          output = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
 
-        input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar!", JOptionPane.PLAIN_MESSAGE);
+          output = -1;
 
-        //Se o utilizador cancelar retorna -2
-        if (input == null){
-          return -2;
+          JOptionPane.showMessageDialog(null, "Numero inválido!", "O numero que inseriu não é válido!", JOptionPane.WARNING_MESSAGE);
+
+          input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar:", "Atualizar", JOptionPane.PLAIN_MESSAGE);
+
         }
 
-      }
+        if (output != -1 && checkDigits(output) != 7) {
+          output = -1;
 
-      //Se o numero for negativo pede o numero outra vez
-      if(output < -1){
-        output = -1;
+          JOptionPane.showMessageDialog(null, "Numero inválido!", "O numero que inseriu não é válido!", JOptionPane.WARNING_MESSAGE);
 
-        JOptionPane.showMessageDialog(null, "Numero inválido!", "Falha ao inserir numero", JOptionPane.WARNING_MESSAGE);
+          input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar:", "Atualizar", JOptionPane.PLAIN_MESSAGE);
 
-        input =  JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar!", JOptionPane.PLAIN_MESSAGE);
+        } else if (output != -1 && pesquisar(numeros, nElems, output) == -1) {
+          output = -1;
 
-        //Se o utilizador cancelar retorna -2
-        if (input == null){
-          return -2;
+          JOptionPane.showMessageDialog(null, "Aluno não encontrado!", "O numero que inseriu não corresponde a nenhum aluno!", JOptionPane.WARNING_MESSAGE);
+
+          input = JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar:", "Atualizar", JOptionPane.PLAIN_MESSAGE);
         }
+      }else {
+        return -1;
       }
     }
 
     //Quando o utilizador introduzir um numero válido retorna-o
-    return output;
+    return pesquisar(numeros, nElems, output);
 
   }
 
