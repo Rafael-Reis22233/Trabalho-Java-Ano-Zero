@@ -97,7 +97,7 @@ public class Main {
 
         case 5:
           if (nElems != 0){
-            atualizarInfo(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
+            nElems = atualizarInfo(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
           }else{
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
           }
@@ -503,8 +503,113 @@ public class Main {
 
   }
 
-  private static void atualizarInfo(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
-    System.out.println("ATUALIZAR INFORMAÇÃO!");
+  private static int atualizarInfo(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    int cop = nElems;
+    int canceled;
+    int numero;
+    int numNew = 0;
+    int numUpdated = 0;
+    int optionConfirm;
+
+    boolean isCanceled = false;
+
+    JFileChooser file = new JFileChooser();
+
+    try {
+
+      do {
+        file.setDialogTitle("Importar Alunos");
+        file.setDialogType(JFileChooser.OPEN_DIALOG);
+        file.setAcceptAllFileFilterUsed(false);
+        file.setPreferredSize(new Dimension(700, 500));
+
+        file.addChoosableFileFilter(new FileNameExtensionFilter("Ficheiros de Texto (.txt)", "txt"));
+
+        canceled = file.showOpenDialog(null);
+
+        if (canceled == JFileChooser.CANCEL_OPTION){
+          isCanceled = true;
+        }
+
+      }while (file.getSelectedFile() == null && !isCanceled);
+
+      if (!isCanceled){
+        Scanner fichFunc = new Scanner(file.getSelectedFile());
+
+        while(fichFunc.hasNextLine() && nElems < numeros.length){
+
+          String linha = fichFunc.nextLine();
+          String[] vetLinha = linha.split(":");
+
+          numero = pesquisar(numeros, nElems, Integer.parseInt(vetLinha[1]));
+
+          if(numero != -1){
+            if(!Objects.equals(turmas[numero], vetLinha[0]) || numeros[numero] != Integer.parseInt(vetLinha[1].trim()) || !Objects.equals(nomes[numero], vetLinha[2]) || algNotas[numero] != Integer.parseInt(vetLinha[3].trim()) || javaNotas[numero] != Integer.parseInt(vetLinha[4].trim()) || vbNotas[numero] != Integer.parseInt(vetLinha[5].trim())){
+
+              turmas[numero] = vetLinha[0];
+              numeros[numero] = Integer.parseInt(vetLinha[1].trim());
+              nomes[numero] = vetLinha[2];
+
+              algNotas[numero] = Integer.parseInt(vetLinha[3].trim());
+              javaNotas[numero] = Integer.parseInt(vetLinha[4].trim());
+              vbNotas[numero] = Integer.parseInt(vetLinha[5].trim());
+
+              numUpdated ++;
+            }
+          }else {
+            numNew++;
+          }
+        }
+        fichFunc.close();
+
+        if(numNew != 0){
+          optionConfirm = JOptionPane.showConfirmDialog(null, "Foram atualizados " + numUpdated + " ficheiros.\nExistem " + numNew + " fichieros que ainda não estão guardados\n\nPretende guardá-los?", "Ficheiros atualizados", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+          if (optionConfirm == JOptionPane.YES_OPTION){
+
+            Scanner fichNew = new Scanner(file.getSelectedFile());
+
+            while(fichNew.hasNextLine() && nElems < numeros.length){
+
+              String linha = fichNew.nextLine();
+              String[] vetLinha = linha.split(":");
+
+              if(pesquisar(numeros, nElems, Integer.parseInt(vetLinha[1])) == -1){
+
+                turmas[nElems] = vetLinha[0];
+                numeros[nElems] = Integer.parseInt(vetLinha[1].trim());
+                nomes[nElems] = vetLinha[2];
+
+                algNotas[nElems] = Integer.parseInt(vetLinha[3].trim());
+                javaNotas[nElems] = Integer.parseInt(vetLinha[4].trim());
+                vbNotas[nElems] = Integer.parseInt(vetLinha[5].trim());
+
+                nElems++;
+
+              }
+            }
+
+            JOptionPane.showMessageDialog(null, numUpdated + " aluno(s) atualizado(s) e "+ numNew +" adicionado(s) com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+            fichFunc.close();
+          }else {
+            JOptionPane.showMessageDialog(null, numUpdated + " alunos atualizados com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+          }
+
+        }else{
+          if(numUpdated == 0){
+            JOptionPane.showMessageDialog(null, "Não foram atualizados quaisquer dados!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+          }else {
+            JOptionPane.showMessageDialog(null, numUpdated + " dado(s) atualizado(s)!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+          }
+        }
+      }
+    }catch (FileNotFoundException e){
+      JOptionPane.showMessageDialog(null, "Ficheiro não encontrado!", "Ficheiro inválido!", JOptionPane.ERROR_MESSAGE);
+    }
+
+    return nElems;
   }
 
   private static int apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
