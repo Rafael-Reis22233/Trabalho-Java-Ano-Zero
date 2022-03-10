@@ -4,7 +4,6 @@
  * Ultima Modificação: 24-02-2022 15:40
  * */
 import java.io.File;
-import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Objects;
 import java.util.Scanner;
@@ -71,26 +70,32 @@ public class Main {
 
         case 2:
           if (nElems != 0){
-            atualizarAluno(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
+            editarAluno(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
           }else{
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
 
         case 3:
+          if (nElems != 0){
+            atualizarInfo(turmas, nomes, numeros, algNotas, javaNotas, vbNotas, nElems);
+          }else{
+            JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem alunos!", JOptionPane.WARNING_MESSAGE);
+          }
+          break;
+
+        case 4:
           if (nElems > 0){
-            if (apagarAluno(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems)) {
+            if (apagarAluno(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems) == 1) {
               JOptionPane.showMessageDialog(null, "Aluno eliminado");
               nElems--;
-            } else {
-              JOptionPane.showMessageDialog(null, "Não há qualquer aluno com o número introduzido!", "Sem Alunos!", JOptionPane.WARNING_MESSAGE);
             }
           } else {
             JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem Alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
 
-        case 4:
+        case 5:
           if (nElems > 0){
             verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
           }else {
@@ -98,7 +103,7 @@ public class Main {
           }
           break;
 
-        case 5:
+        case 6:
           if(nElems < numeros.length){
             nElems = importarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           }else {
@@ -106,7 +111,7 @@ public class Main {
           }
           break;
 
-        case 6:
+        case 7:
           exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
 
@@ -263,11 +268,17 @@ public class Main {
 
   }
 
-  private static void atualizarAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+  private static void atualizarInfo(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+    System.out.println("ATUALIZAR INFORMAÇÃO!");
+  }
+
+
+  private static void editarAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
     int numPos;
     int option;
     int auxInt;
+    int cofirmChange;
 
     boolean isCanceled = false;
     boolean isValid = false;
@@ -280,15 +291,15 @@ public class Main {
 
     JCheckBox[] camposEditar = {new JCheckBox("Nome"), new JCheckBox("Turma"), new JCheckBox("Numero"), new JCheckBox("Nota de Algoritmia"), new JCheckBox("Nota de Java"), new JCheckBox("Nota de Visual Basic")};
 
-    numPos = checkNumberUpdate(JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende atualizar:", "Atualizar",JOptionPane.PLAIN_MESSAGE), numeros, nElems);
+    numPos = checkNumberUpdate(JOptionPane.showInputDialog(null, "Insira o numero do(a) aluno(a) que pretende editar:", "Editar",JOptionPane.PLAIN_MESSAGE), numeros, nElems);
 
     if(numPos != -1){
 
-      msg = "Que campos pretende atualizar:";
+      msg = "Que campos pretende editar:";
 
       msgContent = new Object[] {msg, camposEditar};
 
-      option = JOptionPane.showConfirmDialog ( null,  msgContent,  "Atualizar", JOptionPane.OK_CANCEL_OPTION);
+      option = JOptionPane.showConfirmDialog ( null,  msgContent,  "Editar", JOptionPane.OK_CANCEL_OPTION);
 
       if(option == JOptionPane.OK_OPTION){
 
@@ -296,15 +307,16 @@ public class Main {
 
         if (camposEditar[0].isSelected()){
           do{
-            auxString = JOptionPane.showInputDialog("Insira o novo nome para o(a) aluno(a) '"+ newContent[0] +"':");
+            auxString = JOptionPane.showInputDialog(null, "Insira o novo nome para o(a) aluno(a) '"+ newContent[0] +"':", "Editar Nome", JOptionPane.PLAIN_MESSAGE);
 
             if(auxString != null){
-              auxString.trim();
-              if (!auxString.equals("")){
-                newContent[0] = auxString;
+              if (!auxString.trim().equals("")){
+                newContent[0] = auxString.trim();
               }else {
                 JOptionPane.showMessageDialog(null, "Por favor preencha o campo do nome!", "Nome inválido!", JOptionPane.WARNING_MESSAGE);
               }
+            }else {
+              isCanceled = true;
             }
           }while (Objects.equals(auxString, ""));
         }
@@ -315,12 +327,13 @@ public class Main {
               auxString = JOptionPane.showInputDialog("Insira a turma  do(a) aluno(a) '"+ newContent[0] +"':");
 
               if(auxString != null){
-                auxString.trim();
-                if (!auxString.equals("")){
-                  newContent[0] = auxString;
+                if (!auxString.trim().equals("")){
+                  newContent[1] = auxString.trim();
                 }else {
                   JOptionPane.showMessageDialog(null, "Por favor preencha o campo da turma!", "Turma inválida!", JOptionPane.WARNING_MESSAGE);
                 }
+              }else {
+                isCanceled = true;
               }
             }while (Objects.equals(auxString, ""));
           }
@@ -338,17 +351,80 @@ public class Main {
                 auxInt = checkNumber(auxString, newContent[0].toString());
 
                 if (auxInt != -2){
-                  if(auxInt != ){
+                  if(auxInt != Integer.parseInt(newContent[2].toString())){
                     if(pesquisar(numeros, nElems, auxInt) != -1){
                       JOptionPane.showMessageDialog(null, "O aluno que está a tentar inserir já se econtra guardado!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
                     }
-                  }
 
-                  if (checkDigits(auxInt) != 7){
-                    JOptionPane.showMessageDialog(null, "Por favor introduza um numero válido!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
+                    if (checkDigits(auxInt) != 7){
+                      JOptionPane.showMessageDialog(null, "Por favor introduza um numero válido!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
+                    }else {
+                      newContent[2] = auxInt;
+                      isValid = true;
+                    }
                   }else {
-                    isValid = true;
+                    cofirmChange = JOptionPane.showConfirmDialog(null, "O numero introduzido é o mesmo! Pretende continuar?", "Numero inalterado!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                    if (cofirmChange == JOptionPane.YES_OPTION){
+                      isValid = true;
+                    }
+
+                    if (cofirmChange == JOptionPane.CANCEL_OPTION){
+                      isCanceled = true;
+                    }
+
                   }
+                }else {
+                  isCanceled = true;
+                }
+              }
+            }while (!isValid && !isCanceled);
+          }
+        }
+
+        if (camposEditar[3].isSelected()){
+
+          isValid = false;
+
+          if (!isCanceled){
+            do {
+              auxString = JOptionPane.showInputDialog(null, "Insira a nota de Algoritmia do(a) aluno(a) '"+ newContent[0] +"':", "", JOptionPane.PLAIN_MESSAGE);
+
+              if(auxString == null){
+                isCanceled = true;
+              }else {
+
+                auxInt = checkNota(auxString, newContent[0].toString(), "Algoritmia");
+
+                System.out.println(auxInt);
+
+                if (auxInt != -1){
+                  newContent[3] = auxString;
+                  isValid = true;
+                }else {
+                  isCanceled = true;
+                }
+              }
+            }while (!isValid && !isCanceled);
+          }
+        }
+
+        if (camposEditar[4].isSelected()){
+          isValid = false;
+
+          if (!isCanceled){
+            do {
+              auxString = JOptionPane.showInputDialog(null, "Insira a nota de Java do(a) aluno(a) '"+ newContent[0] +"':", "", JOptionPane.PLAIN_MESSAGE);
+
+              if(auxString == null){
+                isCanceled = true;
+              }else {
+
+                auxInt = checkNota(auxString, newContent[0].toString(), "Java");
+
+                if (auxInt != -1){
+                  newContent[4] = auxString;
+                  isValid = true;
                 }else {
                   isCanceled = true;
                 }
@@ -357,41 +433,73 @@ public class Main {
           }
         }
 
-        if (camposEditar[3].isSelected()){
-          System.out.println("EDITAR NOTA ALG");
-        }
-
-        if (camposEditar[4].isSelected()){
-          System.out.println("EDITAR NOTA JAVA");
-        }
-
         if (camposEditar[5].isSelected()){
-          System.out.println("EDITAR NOTA VB");
+          isValid = false;
+
+          if (!isCanceled){
+            do {
+              auxString = JOptionPane.showInputDialog(null, "Insira a nota de Visual Basic do(a) aluno(a) '"+ newContent[0] +"':", "", JOptionPane.PLAIN_MESSAGE);
+
+              if(auxString == null){
+                isCanceled = true;
+              }else {
+
+                auxInt = checkNota(auxString, newContent[0].toString(), "Visual Basic");
+
+                if (auxInt != -1){
+                  newContent[5] = auxString;
+                  isValid = true;
+                }else {
+                  isCanceled = true;
+                }
+              }
+            }while (!isValid);
+          }
         }
+
+        System.out.println("----------");
+        for (Object obj: newContent) {
+          System.out.println(obj);
+        }
+        System.out.println("----------");
+
       }
     }
   }
 
-  private static boolean apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+  private static int apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
     String numero;
     int pos;
+    boolean isDeleted = false;
 
-    numero = JOptionPane.showInputDialog(null, "Qual o número do aluno que pretende eliminar", "Apagar Aluno", JOptionPane.PLAIN_MESSAGE);
-    pos = pesquisar(numeros, nElems, Integer.parseInt(numero));
-    
-    if (pos != -1) {
-      for (int x = pos; x < nElems - 1; x++) {
-        numeros[x] = numeros[x + 1];
-        nomes[x] = nomes[x + 1];
-        turmas[x] = turmas[x + 1];
-        algNotas[x] = algNotas[x + 1];
-        javaNotas[x] = javaNotas[x + 1];
-        vbNotas[x] = vbNotas[x + 1];
+    do {
+      numero = JOptionPane.showInputDialog(null, "Qual o número do aluno que pretende eliminar", "Apagar Aluno", JOptionPane.PLAIN_MESSAGE);
+
+      if (numero != null){
+        pos = pesquisar(numeros, nElems, Integer.parseInt(numero));
+
+        if (pos != -1) {
+          for (int x = pos; x < nElems - 1; x++) {
+            numeros[x] = numeros[x + 1];
+            nomes[x] = nomes[x + 1];
+            turmas[x] = turmas[x + 1];
+            algNotas[x] = algNotas[x + 1];
+            javaNotas[x] = javaNotas[x + 1];
+            vbNotas[x] = vbNotas[x + 1];
+          }
+          isDeleted = true;
+        }else {
+          JOptionPane.showMessageDialog(null, "Não há qualquer aluno com o número introduzido!", "Sem Alunos!", JOptionPane.WARNING_MESSAGE);
+        }
       }
-      return true;
-    } else {
-      return false;
+    }while (!isDeleted && numero != null);
+
+    if (numero != null){
+      return 1;
+    }else {
+      return 0;
     }
+
   }
 
   private static void verAlunos(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems, int pagina) {
@@ -641,7 +749,7 @@ public class Main {
     int result;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Atualizar Informação", "Apagar Aluno", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
+    String[] options = {"Inserir Aluno", "Editar Aluno","Atualizar Dados", "Apagar Aluno", "Ver Alunos", "Carregar Alunos", "Exportar Alunos", "Sair"};
 
     Object[] msg;
 
@@ -840,10 +948,12 @@ public class Main {
     //Variáveis
     int output = -1;
 
-    boolean isNumber = false;
+    boolean isNumber;
 
     //Recebe uma string da inserção da nota. Se conseguir converter para Integer retorna a nota, senão pede a nota outra vez.
     while (output == -1){
+
+      isNumber = false;
 
       //Se o utilizador cancelar retorna -1
       if (input == null){
