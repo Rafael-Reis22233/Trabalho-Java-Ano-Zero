@@ -338,8 +338,10 @@ public class Main {
                 auxInt = checkNumber(auxString, newContent[0].toString());
 
                 if (auxInt != -2){
-                  if(pesquisar(numeros, nElems, auxInt) != -1){
-                    JOptionPane.showMessageDialog(null, "O aluno que está a tentar inserir já se econtra guardado!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
+                  if(auxInt != ){
+                    if(pesquisar(numeros, nElems, auxInt) != -1){
+                      JOptionPane.showMessageDialog(null, "O aluno que está a tentar inserir já se econtra guardado!", "Numero inválido!", JOptionPane.WARNING_MESSAGE);
+                    }
                   }
 
                   if (checkDigits(auxInt) != 7){
