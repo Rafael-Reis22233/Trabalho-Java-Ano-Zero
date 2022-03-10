@@ -83,10 +83,10 @@ public class Main {
               JOptionPane.showMessageDialog(null, "Aluno eliminado");
               nElems--;
             } else {
-              JOptionPane.showMessageDialog(null, "Não há qualquer aluno com o número introduzido ");
+              JOptionPane.showMessageDialog(null, "Não há qualquer aluno com o número introduzido!", "Sem Alunos!", JOptionPane.WARNING_MESSAGE);
             }
           } else {
-            JOptionPane.showMessageDialog(null, "Não existem alunos");
+            JOptionPane.showMessageDialog(null, "Não existem alunos inseridos!", "Sem Alunos!", JOptionPane.WARNING_MESSAGE);
           }
           break;
 
@@ -374,7 +374,7 @@ public class Main {
     String numero;
     int pos;
 
-    numero = JOptionPane.showInputDialog("Qual o número do aluno que pretende eliminar");
+    numero = JOptionPane.showInputDialog(null, "Qual o número do aluno que pretende eliminar", "Apagar Aluno", JOptionPane.PLAIN_MESSAGE);
     pos = pesquisar(numeros, nElems, Integer.parseInt(numero));
 
     if (pos != -1) {
