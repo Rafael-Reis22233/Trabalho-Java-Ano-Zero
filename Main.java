@@ -1,7 +1,7 @@
 /*
  * Desenvolvido por: Grupo 4 "Os Grandes"
  * Versão: 1.0
- * Ultima Modificação: 10-03-2022 19:45
+ * Nome da versão: Caramel
  * */
 import java.io.File;
 import java.util.Formatter;
@@ -505,6 +505,7 @@ public class Main {
 
   private static int atualizarInfo(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
+    // Variáveis
     int cop = nElems;
     int canceled;
     int numero;
@@ -514,10 +515,12 @@ public class Main {
 
     boolean isCanceled = false;
 
+    //Componentes Java Swing
     JFileChooser file = new JFileChooser();
 
     try {
 
+      //Importa os alunos e atualiza os dados nos vetores
       do {
         file.setDialogTitle("Importar Alunos");
         file.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -563,6 +566,7 @@ public class Main {
         }
         fichFunc.close();
 
+        //Se existerem alunos novos pergunta ao utilizador se os quer adicionar. Se sim adiciona senão mostra só uma mensagem de sucesso
         if(numNew != 0){
           optionConfirm = JOptionPane.showConfirmDialog(null, "Foram atualizados " + numUpdated + " ficheiros.\nExistem " + numNew + " fichieros que ainda não estão guardados\n\nPretende guardá-los?", "Ficheiros atualizados", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
@@ -609,6 +613,7 @@ public class Main {
       JOptionPane.showMessageDialog(null, "Ficheiro não encontrado!", "Ficheiro inválido!", JOptionPane.ERROR_MESSAGE);
     }
 
+    //Retorna o novo nElems
     return nElems;
   }
 
