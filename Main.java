@@ -658,10 +658,8 @@ public class Main {
     //Vetores
     String[] options;
 
-    //Os botões que são mostrados no fundo da tabela são inseridos num vetor de opções que será utilizado depois no JOptionPane da tabela
     options = new String[] {"turma", "Nota de Algoritmia","Nota de VB", "Nota final", "Voltar"};
     int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
-    //JOptionPane.showOptionDialog(parentComponent, message, title, optionType, messageType, icon, options, initialValue)
 
     if (x == 0){
       ordenarTurma(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
@@ -677,6 +675,9 @@ public class Main {
     }
     else if (x == 4){
       MediaFinal(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    else if (x == 5){
+      verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
     }
   }
 
