@@ -116,7 +116,8 @@ public class Main {
           maiorNomeVogais(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
         case 9:
-        
+          exportarPN(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          break;
 
         default:
           exit = exitMenu();
@@ -125,46 +126,7 @@ public class Main {
   }
 
   /*Funcionalidades*/
-
-  private static void maiorNomeVogais(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
-    int[] alunosNumVog = new int[nElems]; //Defenir a matrix
-    Pattern vogais = Pattern.compile("[aeiou]", Pattern.CASE_INSENSITIVE); //Criar variavel Regex, [] são para procurar os carateres individuais
-    Matcher vogaisNome;
-    String[] newturmas = new String[nElems];
-    String[] newnomes = new String[nElems];
-    int[] newnumeros = new int[nElems];
-    int[] newalgNotas = new int[nElems];
-    int[] newjavaNotas = new int[nElems];
-    int[] newvbNotas = new int[nElems];
-    int maior = 0;
-    int nElemsnew = 0;
-    
-    for(int x = 0; x < nElems; x++) { //Limpar o vetor
-      
-      vogaisNome = vogais.matcher(nomes[x]); //Encontra as vogais nos nomes
-
-      alunosNumVog[x] = (int) vogaisNome.results().count(); //Conta as vogais dentro do nome
-    }
-    for(int i = 0; i < nElems; i++) { //Substituir pelo nome com mais vogais
-      if(alunosNumVog[i] > maior) { 
-        maior = alunosNumVog[i];
-      }
-    }
-    for(int i = 0; i < nElems; i++) {
-      if(alunosNumVog[i] == maior) { //Meter os dados no novo array dos alunos com mais vogais
-        newturmas[nElemsnew] = turmas[i];
-        newnomes[nElemsnew] = nomes[i];
-        newnumeros[nElemsnew] = numeros[i];
-        newalgNotas[nElemsnew] = algNotas[i];
-        newjavaNotas[nElemsnew] = javaNotas[i];
-        newvbNotas[nElemsnew] = vbNotas[i];
-        
-        nElemsnew++; //Count
-      }
-    }
-    verAlunos(newturmas,newnumeros, newnomes, newalgNotas, newjavaNotas, newvbNotas, nElemsnew, 1); //Mostar os alunos com mais vogais
-  }
-
+  
   private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
     //Variáveis
@@ -1214,6 +1176,75 @@ public class Main {
       }
     }
   }
+
+  private static void maiorNomeVogais(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+    int[] alunosNumVog = new int[nElems]; //Defenir a matrix
+    Pattern vogais = Pattern.compile("[aeiou]", Pattern.CASE_INSENSITIVE); //Criar variavel Regex, [] são para procurar os carateres individuais
+    Matcher vogaisNome;
+    String[] newturmas = new String[nElems];
+    String[] newnomes = new String[nElems];
+    int[] newnumeros = new int[nElems];
+    int[] newalgNotas = new int[nElems];
+    int[] newjavaNotas = new int[nElems];
+    int[] newvbNotas = new int[nElems];
+    int maior = 0;
+    int nElemsnew = 0;
+    
+    for(int x = 0; x < nElems; x++) { //Limpar o vetor
+      
+      vogaisNome = vogais.matcher(nomes[x]); //Encontra as vogais nos nomes
+
+      alunosNumVog[x] = (int) vogaisNome.results().count(); //Conta as vogais dentro do nome
+    }
+    for(int i = 0; i < nElems; i++) { //Substituir pelo nome com mais vogais
+      if(alunosNumVog[i] > maior) { 
+        maior = alunosNumVog[i];
+      }
+    }
+    for(int i = 0; i < nElems; i++) {
+      if(alunosNumVog[i] == maior) { //Meter os dados no novo array dos alunos com mais vogais
+        newturmas[nElemsnew] = turmas[i];
+        newnomes[nElemsnew] = nomes[i];
+        newnumeros[nElemsnew] = numeros[i];
+        newalgNotas[nElemsnew] = algNotas[i];
+        newjavaNotas[nElemsnew] = javaNotas[i];
+        newvbNotas[nElemsnew] = vbNotas[i];
+        
+        nElemsnew++; //Count
+      }
+    }
+    verAlunos(newturmas,newnumeros, newnomes, newalgNotas, newjavaNotas, newvbNotas, nElemsnew, 1); //Mostar os alunos com mais vogais
+  }
+
+  private static void exportarPN(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+  int[] vbNotas, int nElems) {
+    String sNome = JOptionPane.showInputDialog(null, "Inserira o nome", "Inserir", JOptionPane.PLAIN_MESSAGE);
+    String[] turmasC = new String[nElems];; 
+    int[] numerosC = new int[nElems]; 
+    String[] nomesC = new String[nElems]; 
+    int[] algNotasC= new int[nElems]; 
+    int[] javaNotasC = new int[nElems];
+    int[] vbNotasC = new int[nElems];
+    int c = 0;
+    for (int i = 0; i < nElems; i++){
+      if (nomes[i].contains(sNome)){
+        turmasC[c] = turmas[i];
+        numerosC[c] = numeros[i];
+        nomesC[c] = nomes[i];
+        algNotasC[c] = algNotas[i];
+        javaNotasC[c] = javaNotas[i];
+        vbNotasC[c] = vbNotas[i];
+        c++;
+      }
+    }
+    if (c!=0){
+      exportarDados(turmasC, numerosC, nomesC, algNotas, javaNotasC, vbNotasC, c);
+      JOptionPane.showMessageDialog(null, "Ficheiro exportado com sucesso!");
+    }
+    else{
+      JOptionPane.showMessageDialog(null, "Não existe nenhum aluno com esse nome");
+    }
+}
 
   /* Menus e outras necessidades*/
   public static int menu() {
