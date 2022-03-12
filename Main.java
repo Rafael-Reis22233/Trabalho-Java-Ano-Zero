@@ -670,6 +670,9 @@ public class Main {
     else if (x == 1){
       algNotas(numeros, algNotas, nElems);
     }
+    else if (x == 2){
+      NotasVB()
+    }
   }
 
 
@@ -689,6 +692,41 @@ public class Main {
         }
     }
   }
+
+  private static void NotasVB(int[] numeros, int[] vbNotas, int nElems) {
+    int notas1;
+    String numeros2;
+    for (int x = 0; x < nElems - 1; x++) {
+        for (int y = x + 1; y < nElems; y++) {
+            if(pesquisar(numeros, nElems, numeros[y]) != -1) {
+                numeros2 = numeros[x];
+                numeros[x] = numeros[y];
+                numeros[y]= numeros2;
+                notas1 = vbNotas[x];
+                vbNotas[x] = vbNotas[y];
+                vbNotas[y]= notas1;
+            }
+        }
+    }
+  }
+
+  private static void javanotas(int[] numeros, int[] javaNotas, int nElems) {
+    int notas1;
+    String numeros2;
+    for (int x = 0; x < nElems - 1; x++) {
+        for (int y = x + 1; y < nElems; y++) {
+            if(pesquisar(numeros, nElems, numeros[y]) != -1) {
+                numeros2 = numeros[x];
+                numeros[x] = numeros[y];
+                numeros[y]= numeros2;
+                notas1 = javaNotas[x];
+                javaNotas[x] = javaNotas[y];
+                javaNotas[y]= notas1;
+            }
+        }
+    }
+  }
+
 
   private static void ordenarTurma(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
       int[] vbNotas, int nElems) {
