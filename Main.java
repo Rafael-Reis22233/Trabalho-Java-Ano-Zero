@@ -3,8 +3,11 @@
  * Versão: 1.0
  * Nome da versão: Caramel
  * */
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.Formatter;
+import java.util.Objects;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -651,6 +654,321 @@ public class Main {
 
   private static void ordenarClassificacao(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
+
+    //Vetores
+    String[] options;
+
+    options = new String[] {"Turma", "Nota de Algoritmia", "Nota de Java", "Nota de VB", "Nota final", "Voltar"};
+    int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+    if (x == 0){
+      ordenarTurma(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    if (x == 1){
+      algNotas(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    if (x == 2){
+      Javanotas(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    if (x == 3){
+      NotasVB(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    if (x == 4){
+      MediaFinal(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    if (x == 5){
+      verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+    }
+  }
+
+
+  private static void MediaFinal(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+                                 int[] vbNotas, int nElems) {
+    int notas1;
+    int numeros2;
+    int auxJavaNota;
+    int auxVbNota;
+
+    String auxNomes;
+    String auxTurmas;
+
+    for (int x = 0; x < nElems - 1; x++) {
+      for (int y = x + 1; y < nElems; y++) {
+        if(notaFinal(algNotas[y], javaNotas[y], vbNotas[y]) > notaFinal(algNotas[x], javaNotas[x], vbNotas[x])) {
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+        }
+
+        if (numeros[x] > numeros[y] && notaFinal(algNotas[y], javaNotas[y], vbNotas[y]) == notaFinal(algNotas[x], javaNotas[x], vbNotas[x])){
+
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+        }
+      }
+    }
+    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+
+  }
+
+  private static void NotasVB(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+                              int[] vbNotas, int nElems) {
+    int notas1;
+    int numeros2;
+    int auxJavaNota;
+    int auxVbNota;
+
+    String auxNomes;
+    String auxTurmas;
+
+    for (int x = 0; x < nElems - 1; x++) {
+      for (int y = x + 1; y < nElems; y++) {
+        if(vbNotas[y] > vbNotas[x]) {
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+        }
+
+        if (numeros[x] > numeros[y] && algNotas[y] == algNotas[x]){
+
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+        }
+      }
+    }
+    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+
+
+  }
+
+  private static void Javanotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+                                int[] vbNotas, int nElems) {
+    int notas1;
+    int numeros2;
+    int auxJavaNota;
+    int auxVbNota;
+
+    String auxNomes;
+    String auxTurmas;
+
+    for (int x = 0; x < nElems - 1; x++) {
+      for (int y = x + 1; y < nElems; y++) {
+        if(javaNotas[y] > javaNotas[x]) {
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+        }
+
+        if (numeros[x] > numeros[y] && algNotas[y] == algNotas[x]){
+
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+        }
+      }
+    }
+    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+
+  }
+
+
+  private static void algNotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+                               int[] vbNotas, int nElems) {
+    int notas1;
+    int numeros2;
+    int auxJavaNota;
+    int auxVbNota;
+
+    String auxNomes;
+    String auxTurmas;
+
+    for (int x = 0; x < nElems - 1; x++) {
+      for (int y = x + 1; y < nElems; y++) {
+        if(algNotas[y] > algNotas[x]) {
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+        }
+
+        if (numeros[x] > numeros[y] && algNotas[y] == algNotas[x]){
+
+          numeros2 = numeros[x];
+          numeros[x] = numeros[y];
+          numeros[y]= numeros2;
+
+          notas1 = algNotas[x];
+          algNotas[x] = algNotas[y];
+          algNotas[y]= notas1;
+
+          auxTurmas = turmas[x];
+          turmas[x] = turmas[y];
+          turmas[y] = auxTurmas;
+
+          auxNomes = nomes[x];
+          nomes[x] = nomes[y];
+          nomes[y] = auxNomes;
+
+          auxJavaNota = javaNotas[x];
+          javaNotas[x] = javaNotas[y];
+          javaNotas[y] = auxJavaNota;
+
+          auxVbNota = vbNotas[x];
+          vbNotas[x] = vbNotas[y];
+          vbNotas[y] = auxVbNota;
+
+        }
+      }
+    }
+    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+  }
+
+  private static void ordenarTurma(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+                                   int[] vbNotas, int nElems) {
     //Variáveis
     int auxNumero;
     int auxAlgNota;
@@ -736,7 +1054,6 @@ public class Main {
 
     //Chama a função verAlunos() para mostrar a tabela ordenada
     verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
-
   }
 
   private static int importarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
