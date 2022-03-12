@@ -114,6 +114,9 @@ public class Main {
         case 7:
           exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
+        case 8:
+          exportarPN(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          break;
 
         default:
           exit = exitMenu();
@@ -123,7 +126,37 @@ public class Main {
 
   /*Funcionalidades*/
 
-  private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+  private static void exportarPN(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+        int[] vbNotas, int nElems) {
+          String sNome = JOptionPane.showInputDialog(null, "Inserira o nome", "Inserir", JOptionPane.PLAIN_MESSAGE);
+          String[] turmasC = new String[nElems];; 
+          int[] numerosC = new int[nElems]; 
+          String[] nomesC = new String[nElems]; 
+          int[] algNotasC= new int[nElems]; 
+          int[] javaNotasC = new int[nElems];
+          int[] vbNotasC = new int[nElems];
+          int c = 0;
+          for (int i = 0; i < nElems; i++){
+            if (nomes[i].contains(sNome)){
+              turmasC[c] = turmas[i];
+              numerosC[c] = numeros[i];
+              nomesC[c] = nomes[i];
+              algNotasC[c] = algNotas[i];
+              javaNotasC[c] = javaNotas[i];
+              vbNotasC[c] = vbNotas[i];
+              c++;
+            }
+          }
+          if (c!=0){
+            exportarDados(turmasC, numerosC, nomesC, algNotas, javaNotasC, vbNotasC, c);
+            JOptionPane.showMessageDialog(null, "Ficheiro exportado com sucesso!");
+          }
+          else{
+            JOptionPane.showMessageDialog(null, "Não existe nenhum aluno com esse nome");
+          }
+}
+
+private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
     //Variáveis
     String nome;
@@ -1186,7 +1219,7 @@ public class Main {
     int result;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Sair"};
+    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Exportar por Nome", "Sair"};
 
     Object[] msg;
 
