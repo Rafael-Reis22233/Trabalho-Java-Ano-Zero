@@ -3,11 +3,8 @@
  * Versão: 1.0
  * Nome da versão: Caramel
  * */
-import java.io.File;
-import java.util.Formatter;
-import java.util.Objects;
-import java.util.Scanner;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -654,12 +651,11 @@ public class Main {
 
   private static void ordenarClassificacao(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
-
     //Vetores
     String[] options;
 
     options = new String[] {"Turma", "Nota de Algoritmia", "Nota de Java", "Nota de VB", "Nota final", "Voltar"};
-    int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+    int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação:", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
 
     if (x == 0){
       ordenarTurma(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
@@ -682,8 +678,7 @@ public class Main {
   }
 
 
-  private static void MediaFinal(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                                 int[] vbNotas, int nElems) {
+  private static void MediaFinal(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -753,8 +748,7 @@ public class Main {
 
   }
 
-  private static void NotasVB(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                              int[] vbNotas, int nElems) {
+  private static void NotasVB(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -825,8 +819,7 @@ public class Main {
 
   }
 
-  private static void Javanotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                                int[] vbNotas, int nElems) {
+  private static void Javanotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -897,8 +890,7 @@ public class Main {
   }
 
 
-  private static void algNotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                               int[] vbNotas, int nElems) {
+  private static void algNotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -967,8 +959,7 @@ public class Main {
     verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
   }
 
-  private static void ordenarTurma(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-                                   int[] vbNotas, int nElems) {
+  private static void ordenarTurma(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
     //Variáveis
     int auxNumero;
     int auxAlgNota;
