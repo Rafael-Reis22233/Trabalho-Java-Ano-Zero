@@ -654,92 +654,129 @@ public class Main {
 
   private static void ordenarClassificacao(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
-    //Variáveis
-    int auxNumero;
-    int auxAlgNota;
-    int auxJavaNota;
-    int auxVbNota;
+    int option;
 
-    String auxNomes;
-    String auxTurmas;
+    //Vetores
+    String[] options;
 
-    //Um conjunto de loops for é utilizado para comparar e trocar quando necessário as entradas dos u«alunos nos vetores
-    for (int i = 0; i < nElems; i++) {
-      for (int j = i + 1; j < nElems; j++) {
-        //Ordena os alunos por ordem crescente de turma
-        if(turmas[j].compareToIgnoreCase(turmas[i]) < 0){
+    //Os botões que são mostrados no fundo da tabela são inseridos num vetor de opções que será utilizado depois no JOptionPane da tabela
+    options = new String[] {"turma", "Nota de Algoritmia","Nota de VB", "Voltar"};
+    int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar" );
+    //JOptionPane.showOptionDialog(parentComponent, message, title, optionType, messageType, icon, options, initialValue)
 
-          //Troca os nomes dos alunos
-          auxNomes = nomes[i];
-          nomes[i] = nomes[j];
-          nomes[j] = auxNomes;
+    if (x == 0){
+      ordenarTurma(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+    }
+    else if (x == 1){
+      algNotas(numeros, algNotas, nElems);
+    }
+  }
 
-          //Troca as turmas dos alunos
-          auxTurmas = turmas[i];
-          turmas[i] = turmas[j];
-          turmas[j] = auxTurmas;
 
-          //Troca o numero dos alunos
-          auxNumero = numeros[i];
-          numeros[i] = numeros[j];
-          numeros[j] = auxNumero;
-
-          //Troca a nota de Algoritmia dos alunos
-          auxAlgNota = algNotas[i];
-          algNotas[i] = algNotas[j];
-          algNotas[j] = auxAlgNota;
-
-          //Troca a nota de Java dos alunos
-          auxJavaNota = javaNotas[i];
-          javaNotas[i] = javaNotas[j];
-          javaNotas[j] = auxJavaNota;
-
-          //Troca a nota de Visual Basic dos alunos
-          auxVbNota = vbNotas[i];
-          vbNotas[i] = vbNotas[j];
-          vbNotas[j] = auxVbNota;
+  private static void algNotas(int[] numeros, int[] algNotas, int nElems) {
+    int notas1;
+    String numeros2;
+    for (int x = 0; x < nElems - 1; x++) {
+        for (int y = x + 1; y < nElems; y++) {
+            if(pesquisar(numeros, nElems, numeros[y]) != -1) {
+                numeros2 = numeros[x];
+                numeros[x] = numeros[y];
+                numeros[y]= numeros2;
+                notas1 = algNotas[x];
+                algNotas[x] = algNotas[y];
+                algNotas[y]= notas1;
+            }
         }
+    }
+  }
 
-        //Se as turmas forem iguais oredena por ordem crescente de numero
-        if (numeros[i] > numeros[j] && turmas[j].compareToIgnoreCase(turmas[i]) == 0){
+  private static void ordenarTurma(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
+      int[] vbNotas, int nElems) {
+      //Variáveis
+      int auxNumero;
+      int auxAlgNota;
+      int auxJavaNota;
+      int auxVbNota;
 
-          //Troca os nomes dos alunos
-          auxNomes = nomes[i];
-          nomes[i] = nomes[j];
-          nomes[j] = auxNomes;
+      String auxNomes;
+      String auxTurmas;
 
-          //Troca as turmas dos alunos
-          auxTurmas = turmas[i];
-          turmas[i] = turmas[j];
-          turmas[j] = auxTurmas;
+      //Um conjunto de loops for é utilizado para comparar e trocar quando necessário as entradas dos u«alunos nos vetores
+      for (int i = 0; i < nElems; i++) {
+        for (int j = i + 1; j < nElems; j++) {
+          //Ordena os alunos por ordem crescente de turma
+          if(turmas[j].compareToIgnoreCase(turmas[i]) < 0){
 
-          //Troca o numero dos alunos
-          auxNumero = numeros[i];
-          numeros[i] = numeros[j];
-          numeros[j] = auxNumero;
+            //Troca os nomes dos alunos
+            auxNomes = nomes[i];
+            nomes[i] = nomes[j];
+            nomes[j] = auxNomes;
 
-          //Troca a nota de Algoritmia dos alunos
-          auxAlgNota = algNotas[i];
-          algNotas[i] = algNotas[j];
-          algNotas[j] = auxAlgNota;
+            //Troca as turmas dos alunos
+            auxTurmas = turmas[i];
+            turmas[i] = turmas[j];
+            turmas[j] = auxTurmas;
 
-          //Troca a nota de Java dos alunos
-          auxJavaNota = javaNotas[i];
-          javaNotas[i] = javaNotas[j];
-          javaNotas[j] = auxJavaNota;
+            //Troca o numero dos alunos
+            auxNumero = numeros[i];
+            numeros[i] = numeros[j];
+            numeros[j] = auxNumero;
 
-          //Troca a nota de Visual Basic dos alunos
-          auxVbNota = vbNotas[i];
-          vbNotas[i] = vbNotas[j];
-          vbNotas[j] = auxVbNota;
+            //Troca a nota de Algoritmia dos alunos
+            auxAlgNota = algNotas[i];
+            algNotas[i] = algNotas[j];
+            algNotas[j] = auxAlgNota;
 
+            //Troca a nota de Java dos alunos
+            auxJavaNota = javaNotas[i];
+            javaNotas[i] = javaNotas[j];
+            javaNotas[j] = auxJavaNota;
+
+            //Troca a nota de Visual Basic dos alunos
+            auxVbNota = vbNotas[i];
+            vbNotas[i] = vbNotas[j];
+            vbNotas[j] = auxVbNota;
+          }
+
+          //Se as turmas forem iguais oredena por ordem crescente de numero
+          if (numeros[i] > numeros[j] && turmas[j].compareToIgnoreCase(turmas[i]) == 0){
+
+            //Troca os nomes dos alunos
+            auxNomes = nomes[i];
+            nomes[i] = nomes[j];
+            nomes[j] = auxNomes;
+
+            //Troca as turmas dos alunos
+            auxTurmas = turmas[i];
+            turmas[i] = turmas[j];
+            turmas[j] = auxTurmas;
+
+            //Troca o numero dos alunos
+            auxNumero = numeros[i];
+            numeros[i] = numeros[j];
+            numeros[j] = auxNumero;
+
+            //Troca a nota de Algoritmia dos alunos
+            auxAlgNota = algNotas[i];
+            algNotas[i] = algNotas[j];
+            algNotas[j] = auxAlgNota;
+
+            //Troca a nota de Java dos alunos
+            auxJavaNota = javaNotas[i];
+            javaNotas[i] = javaNotas[j];
+            javaNotas[j] = auxJavaNota;
+
+            //Troca a nota de Visual Basic dos alunos
+            auxVbNota = vbNotas[i];
+            vbNotas[i] = vbNotas[j];
+            vbNotas[j] = auxVbNota;
+
+          }
         }
       }
-    }
 
-    //Chama a função verAlunos() para mostrar a tabela ordenada
-    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
-
+      //Chama a função verAlunos() para mostrar a tabela ordenada
+      verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
   }
 
   private static int importarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
