@@ -658,7 +658,7 @@ public class Main {
     //Vetores
     String[] options;
 
-    options = new String[] {"turma", "Nota de Algoritmia","Nota de VB", "Nota final", "Voltar"};
+    options = new String[] {"Turma", "Nota de Algoritmia","Nota de VB", "Nota final", "Voltar"};
     int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
 
     if (x == 0){
