@@ -5,6 +5,7 @@
  * */
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -111,6 +112,11 @@ public class Main {
         case 7:
           exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
+        case 8:
+          maiorNomeVogais(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          break;
+        case 9:
+        
 
         default:
           exit = exitMenu();
@@ -119,6 +125,45 @@ public class Main {
   }
 
   /*Funcionalidades*/
+
+  private static void maiorNomeVogais(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+    int[] alunosNumVog = new int[nElems]; //Defenir a matrix
+    Pattern vogais = Pattern.compile("[aeiou]", Pattern.CASE_INSENSITIVE); //Criar variavel Regex, [] são para procurar os carateres individuais
+    Matcher vogaisNome;
+    String[] newturmas = new String[nElems];
+    String[] newnomes = new String[nElems];
+    int[] newnumeros = new int[nElems];
+    int[] newalgNotas = new int[nElems];
+    int[] newjavaNotas = new int[nElems];
+    int[] newvbNotas = new int[nElems];
+    int maior = 0;
+    int nElemsnew = 0;
+    
+    for(int x = 0; x < nElems; x++) { //Limpar o vetor
+      
+      vogaisNome = vogais.matcher(nomes[x]); //Encontra as vogais nos nomes
+
+      alunosNumVog[x] = (int) vogaisNome.results().count(); //Conta as vogais dentro do nome
+    }
+    for(int i = 0; i < nElems; i++) { //Substituir pelo nome com mais vogais
+      if(alunosNumVog[i] > maior) { 
+        maior = alunosNumVog[i];
+      }
+    }
+    for(int i = 0; i < nElems; i++) {
+      if(alunosNumVog[i] == maior) { //Meter os dados no novo array dos alunos com mais vogais
+        newturmas[nElemsnew] = turmas[i];
+        newnomes[nElemsnew] = nomes[i];
+        newnumeros[nElemsnew] = numeros[i];
+        newalgNotas[nElemsnew] = algNotas[i];
+        newjavaNotas[nElemsnew] = javaNotas[i];
+        newvbNotas[nElemsnew] = vbNotas[i];
+        
+        nElemsnew++; //Count
+      }
+    }
+    verAlunos(newturmas,newnumeros, newnomes, newalgNotas, newjavaNotas, newvbNotas, nElemsnew, 1); //Mostar os alunos com mais vogais
+  }
 
   private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
@@ -1112,6 +1157,7 @@ public class Main {
 
   }
 
+
   private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems){
 
     int canceled;
@@ -1177,7 +1223,7 @@ public class Main {
     int result;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Sair"};
+    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Alunos com mais Vogais", "Esportar por Nome", "Sair"};
 
     Object[] msg;
 
@@ -1374,6 +1420,8 @@ public class Main {
     return pesquisar(numeros, nElems, output);
 
   }
+
+  
 
   private static int checkNota(String input, String nome, String notaNome) {
 
