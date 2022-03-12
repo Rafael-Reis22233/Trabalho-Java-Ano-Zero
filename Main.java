@@ -658,25 +658,25 @@ public class Main {
     //Vetores
     String[] options;
 
-    options = new String[] {"Turma", "Nota de Algoritmia","Nota de VB", "Nota final", "Voltar"};
+    options = new String[] {"Turma", "Nota de Algoritmia", "Nota de Java", "Nota de VB", "Nota final", "Voltar"};
     int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
 
     if (x == 0){
       ordenarTurma(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
-    else if (x == 1){
+    if (x == 1){
       algNotas(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
-    else if (x == 2){
+    if (x == 2){
       Javanotas(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
-    else if (x == 3){
+    if (x == 3){
       NotasVB(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
-    else if (x == 4){
+    if (x == 4){
       MediaFinal(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
-    else if (x == 5){
+    if (x == 5){
       verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
     }
   }
