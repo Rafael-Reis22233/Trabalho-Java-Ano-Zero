@@ -35,18 +35,16 @@ public class Main {
     //Programa Principal
 
     try {
+      //Muda a interface para ficar com o look do windows
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
+      //Retira o tracejado ao clicar nos botões
       UIManager.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
       UIManager.put("ToggleButton.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-
-      // ways to remove it from other controls...
       UIManager.put("CheckBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
       UIManager.put("TabbedPane.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
       UIManager.put("RadioButton.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
       UIManager.put("Slider.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
-
-      // figure out combobox
       UIManager.put("ComboBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
 
     } catch (Exception e) {
@@ -105,22 +103,37 @@ public class Main {
           if(nElems < numeros.length){
             nElems = importarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           }else {
-            JOptionPane.showMessageDialog(null, "Não existem dados");
+            JOptionPane.showMessageDialog(null, "Não existem dados", "Sem Alunos!",JOptionPane.WARNING_MESSAGE);
           }
           break;
 
         case 7:
-          exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          if(nElems != 0){
+            exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          }else {
+            JOptionPane.showMessageDialog(null, "Não existem dados", "Sem Alunos!",JOptionPane.WARNING_MESSAGE);
+          }
           break;
+
         case 8:
-          maiorNomeVogais(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          if(nElems != 0){
+            maiorNomeVogais(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          }else {
+            JOptionPane.showMessageDialog(null, "Não existem dados", "Sem Alunos!",JOptionPane.WARNING_MESSAGE);
+          }
           break;
+
         case 9:
-          exportarPN(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          if(nElems != 0){
+            exportarPN(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          }else {
+            JOptionPane.showMessageDialog(null, "Não existem dados", "Sem Alunos!",JOptionPane.WARNING_MESSAGE);
+          }
           break;
 
         default:
           exit = exitMenu();
+          break;
       }
     } while (!exit);
   }
@@ -622,13 +635,17 @@ public class Main {
   }
 
   private static int apagarAluno(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    //Variáveis
     String numero;
     int pos;
     boolean isDeleted = false;
 
     do {
+      //Recebe o numero a ser apagado
       numero = JOptionPane.showInputDialog(null, "Qual o número do aluno que pretende eliminar", "Apagar Aluno", JOptionPane.PLAIN_MESSAGE);
 
+      //Se o utilizador não cancelar apaga o aluno
       if (numero != null){
         pos = pesquisar(numeros, nElems, Integer.parseInt(numero));
 
@@ -661,6 +678,7 @@ public class Main {
     //Vetores
     String[] options;
 
+    //Recebe o tipo de organizaçáo dos alunos
     options = new String[] {"Turma", "Nota de Algoritmia", "Nota de Java", "Nota de VB", "Nota final", "Voltar"};
     int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação:", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
 
@@ -686,6 +704,8 @@ public class Main {
 
 
   private static void MediaFinal(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    //Variáveis
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -696,6 +716,8 @@ public class Main {
 
     for (int x = 0; x < nElems - 1; x++) {
       for (int y = x + 1; y < nElems; y++) {
+
+        //Ordena os alunos por ordem de média final
         if(notaFinal(algNotas[y], javaNotas[y], vbNotas[y]) > notaFinal(algNotas[x], javaNotas[x], vbNotas[x])) {
           numeros2 = numeros[x];
           numeros[x] = numeros[y];
@@ -751,11 +773,15 @@ public class Main {
         }
       }
     }
+
+    //Mostra os alunos ordenados
     verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
 
   }
 
   private static void NotasVB(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    //Variáveis
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -766,6 +792,8 @@ public class Main {
 
     for (int x = 0; x < nElems - 1; x++) {
       for (int y = x + 1; y < nElems; y++) {
+
+        //Ordena os alunos por ordem de nota de Visual Basic
         if(vbNotas[y] > vbNotas[x]) {
           numeros2 = numeros[x];
           numeros[x] = numeros[y];
@@ -821,12 +849,15 @@ public class Main {
         }
       }
     }
-    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
 
+    //Mostra os alunos por ordem de Visual Basic
+    verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
 
   }
 
   private static void Javanotas(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    //Variáveis
     int notas1;
     int numeros2;
     int auxJavaNota;
@@ -837,6 +868,8 @@ public class Main {
 
     for (int x = 0; x < nElems - 1; x++) {
       for (int y = x + 1; y < nElems; y++) {
+
+        //Ordena os alunos por ordem de nostas de Java
         if(javaNotas[y] > javaNotas[x]) {
           numeros2 = numeros[x];
           numeros[x] = numeros[y];
@@ -892,6 +925,8 @@ public class Main {
         }
       }
     }
+
+    //Mostra os alunos ordenados por notas de Java
     verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
 
   }
@@ -908,6 +943,8 @@ public class Main {
 
     for (int x = 0; x < nElems - 1; x++) {
       for (int y = x + 1; y < nElems; y++) {
+
+        //Ordena os alunos por ordem das notas de Algoritmia
         if(algNotas[y] > algNotas[x]) {
           numeros2 = numeros[x];
           numeros[x] = numeros[y];
@@ -963,7 +1000,10 @@ public class Main {
         }
       }
     }
+
+    //Mostra os alunos por ordem de nostas de Algoritmia
     verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
+
   }
 
   private static void ordenarTurma(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
@@ -1056,15 +1096,18 @@ public class Main {
 
   private static int importarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
+    //Variáveis
     int cop = nElems;
     int canceled;
 
     boolean isCanceled = false;
 
+    //Componentes Java Swing
     JFileChooser file = new JFileChooser();
 
     try {
 
+      //Escolhe o ficheiro a ser importado por meio de um JFileChooser
       do {
         file.setDialogTitle("Importar Alunos");
         file.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -1081,6 +1124,7 @@ public class Main {
 
       }while (file.getSelectedFile() == null && !isCanceled);
 
+      //Se o utilizador não tiver cancelado importa os dados do ficheiro
       if (!isCanceled){
         Scanner fichFunc = new Scanner(file.getSelectedFile());
 
@@ -1115,6 +1159,7 @@ public class Main {
       JOptionPane.showMessageDialog(null, "Ficheiro não encontrado!", "Ficheiro inválido!", JOptionPane.ERROR_MESSAGE);
     }
 
+    //Retorna o novo nElems
     return nElems;
 
   }
@@ -1122,6 +1167,7 @@ public class Main {
 
   private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems){
 
+    //Variáveis
     int canceled;
 
     boolean isCanceled = false;
@@ -1129,8 +1175,10 @@ public class Main {
 
     File file = null;
 
+    //Componentes Java Swing
     JFileChooser fileChooser = new JFileChooser();
 
+    //Seleciona o local e nome do ficheiro para exportar
     do {
       fileChooser.setDialogTitle("Exportar Alunos");
       fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -1146,6 +1194,7 @@ public class Main {
         isCanceled = true;
       }
 
+      //Verifica se o ficheiro acaba em ".txt"
       if(checkValidFile(fileChooser.getSelectedFile().toString()) == 2 && fileChooser.getSelectedFile() != null){
         file = new File(fileChooser.getSelectedFile().toString() + ".txt");
         isSet = true;
@@ -1157,6 +1206,7 @@ public class Main {
       file = fileChooser.getSelectedFile();
     }
 
+    //Se o utilizador não cancelar cria e preenche o ficheiro
     if(!isCanceled){
       try {
         Formatter fichAlunos = new Formatter(file);
@@ -1178,31 +1228,42 @@ public class Main {
   }
 
   private static void maiorNomeVogais(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
-    int[] alunosNumVog = new int[nElems]; //Defenir a matrix
-    Pattern vogais = Pattern.compile("[aeiou]", Pattern.CASE_INSENSITIVE); //Criar variavel Regex, [] são para procurar os carateres individuais
-    Matcher vogaisNome;
-    String[] newturmas = new String[nElems];
-    String[] newnomes = new String[nElems];
+
+    //Variáveis
+    int maior = 0;
+    int nElemsnew = 0;
+
+    //Vetores
+    int[] alunosNumVog = new int[nElems];
     int[] newnumeros = new int[nElems];
     int[] newalgNotas = new int[nElems];
     int[] newjavaNotas = new int[nElems];
     int[] newvbNotas = new int[nElems];
-    int maior = 0;
-    int nElemsnew = 0;
-    
-    for(int x = 0; x < nElems; x++) { //Limpar o vetor
-      
-      vogaisNome = vogais.matcher(nomes[x]); //Encontra as vogais nos nomes
 
-      alunosNumVog[x] = (int) vogaisNome.results().count(); //Conta as vogais dentro do nome
+    String[] newturmas = new String[nElems];
+    String[] newnomes = new String[nElems];
+
+    //Componentes Regex
+    Pattern vogais = Pattern.compile("[aeiou]", Pattern.CASE_INSENSITIVE);
+    Matcher vogaisNome;
+
+    //Verifica e guarda o numero de vogais que existem
+    for(int x = 0; x < nElems; x++) {
+      vogaisNome = vogais.matcher(nomes[x]);
+      alunosNumVog[x] = (int) vogaisNome.results().count();
     }
-    for(int i = 0; i < nElems; i++) { //Substituir pelo nome com mais vogais
+
+    //Verfica qual o maior numero de vogais em qualquer nome
+    for(int i = 0; i < nElems; i++) {
       if(alunosNumVog[i] > maior) { 
         maior = alunosNumVog[i];
       }
     }
+
+    //Guarda os alunos com mais vogais num novo vetor
     for(int i = 0; i < nElems; i++) {
-      if(alunosNumVog[i] == maior) { //Meter os dados no novo array dos alunos com mais vogais
+      if(alunosNumVog[i] == maior) {
+
         newturmas[nElemsnew] = turmas[i];
         newnomes[nElemsnew] = nomes[i];
         newnumeros[nElemsnew] = numeros[i];
@@ -1210,38 +1271,50 @@ public class Main {
         newjavaNotas[nElemsnew] = javaNotas[i];
         newvbNotas[nElemsnew] = vbNotas[i];
         
-        nElemsnew++; //Count
+        nElemsnew++;
       }
     }
-    verAlunos(newturmas,newnumeros, newnomes, newalgNotas, newjavaNotas, newvbNotas, nElemsnew, 1); //Mostar os alunos com mais vogais
+
+    //Mostra os alunos com maior vogais
+    verAlunos(newturmas, newnumeros, newnomes, newalgNotas, newjavaNotas, newvbNotas, nElemsnew, 1); //Mostar os alunos com mais vogais
+
   }
 
-  private static void exportarPN(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
-  int[] vbNotas, int nElems) {
-    String sNome = JOptionPane.showInputDialog(null, "Inserira o nome", "Inserir", JOptionPane.PLAIN_MESSAGE);
-    String[] turmasC = new String[nElems];; 
-    int[] numerosC = new int[nElems]; 
-    String[] nomesC = new String[nElems]; 
-    int[] algNotasC= new int[nElems]; 
+  private static void exportarPN(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+
+    //Variáveis
+    int c = 0;
+
+    String sNome = JOptionPane.showInputDialog(null, "Inserira o nome:", "Inserir", JOptionPane.PLAIN_MESSAGE);
+
+    //Vetores
+    int[] numerosC = new int[nElems];
+    int[] algNotasC= new int[nElems];
     int[] javaNotasC = new int[nElems];
     int[] vbNotasC = new int[nElems];
-    int c = 0;
+
+    String[] turmasC = new String[nElems];
+    String[] nomesC = new String[nElems];
+
+    //Guarda os alunos que correspondem á string introduzida
     for (int i = 0; i < nElems; i++){
       if (nomes[i].contains(sNome)){
+
         turmasC[c] = turmas[i];
         numerosC[c] = numeros[i];
         nomesC[c] = nomes[i];
         algNotasC[c] = algNotas[i];
         javaNotasC[c] = javaNotas[i];
         vbNotasC[c] = vbNotas[i];
+
         c++;
       }
     }
+
+    //Se existir alunos com a String exporta senão mostra uma mensagem
     if (c!=0){
       exportarDados(turmasC, numerosC, nomesC, algNotas, javaNotasC, vbNotasC, c);
-      JOptionPane.showMessageDialog(null, "Ficheiro exportado com sucesso!");
-    }
-    else{
+    } else{
       JOptionPane.showMessageDialog(null, "Não existe nenhum aluno com esse nome");
     }
 }
@@ -1254,7 +1327,7 @@ public class Main {
     int result;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Alunos com mais Vogais", "Esportar por Nome", "Sair"};
+    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Alunos com mais Vogais", "Exportar por Nome", "Sair"};
 
     Object[] msg;
 
@@ -1538,10 +1611,16 @@ public class Main {
   }
 
   private static int pesquisar(int[] numeros, int nElems, int numero) {
+
+    //Variáveis
     int pos = 0;
+
+    //Verifica se o aluno existe
     while (pos < nElems && numero != numeros[pos]) {
       pos++;
     }
+
+    //Se existir um aluno retorna a posição senão retorna -1
     if (pos < nElems) {
       return pos;
     } else {
