@@ -3,11 +3,9 @@
  * Versão: 1.0
  * Nome da versão: Caramel
  * */
-import java.io.File;
-import java.util.Formatter;
-import java.util.Objects;
-import java.util.Scanner;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -114,6 +112,9 @@ public class Main {
         case 7:
           exportarDados(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
           break;
+        case 8:
+          maiorNomeVogais(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
+          break;
 
         default:
           exit = exitMenu();
@@ -122,6 +123,45 @@ public class Main {
   }
 
   /*Funcionalidades*/
+
+  private static void maiorNomeVogais(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
+    int[] alunosNumVog = new int[nElems]; //Defenir a matrix
+    Pattern vogais = Pattern.compile("[aeiou]", Pattern.CASE_INSENSITIVE); //Criar variavel Regex, [] são para procurar os carateres individuais
+    Matcher vogaisNome;
+    String[] newturmas = new String[nElems];
+    String[] newnomes = new String[nElems];
+    int[] newnumeros = new int[nElems];
+    int[] newalgNotas = new int[nElems];
+    int[] newjavaNotas = new int[nElems];
+    int[] newvbNotas = new int[nElems];
+    int maior = 0;
+    int nElemsnew = 0;
+    
+    for(int x = 0; x < nElems; x++) { //Limpar o vetor
+      
+      vogaisNome = vogais.matcher(nomes[x]); //Encontra as vogais nos nomes
+
+      alunosNumVog[x] = (int) vogaisNome.results().count(); //Conta as vogais dentro do nome
+    }
+    for(int i = 0; i < nElems; i++) { //Substituir pelo nome com mais vogais
+      if(alunosNumVog[i] > maior) { 
+        maior = alunosNumVog[i];
+      }
+    }
+    for(int i = 0; i < nElems; i++) {
+      if(alunosNumVog[i] == maior) { //Meter os dados no novo array dos alunos com mais vogais
+        newturmas[nElemsnew] = turmas[i];
+        newnomes[nElemsnew] = nomes[i];
+        newnumeros[nElemsnew] = numeros[i];
+        newalgNotas[nElemsnew] = algNotas[i];
+        newjavaNotas[nElemsnew] = javaNotas[i];
+        newvbNotas[nElemsnew] = vbNotas[i];
+        
+        nElemsnew++; //Count
+      }
+    }
+    verAlunos(newturmas,newnumeros, newnomes, newalgNotas, newjavaNotas, newvbNotas, nElemsnew, 1); //Mostar os alunos com mais vogais
+  }
 
   private static int inserirAluno(String[] turmas, String[] nomes, int[] numeros, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems) {
 
@@ -658,8 +698,10 @@ public class Main {
     //Vetores
     String[] options;
 
+    //Os botões que são mostrados no fundo da tabela são inseridos num vetor de opções que será utilizado depois no JOptionPane da tabela
     options = new String[] {"turma", "Nota de Algoritmia","Nota de VB", "Nota final", "Voltar"};
     int x = JOptionPane.showOptionDialog(null, "Escolha o método de ordenação", "Ordenar", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+    //JOptionPane.showOptionDialog(parentComponent, message, title, optionType, messageType, icon, options, initialValue)
 
     if (x == 0){
       ordenarTurma(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
@@ -676,10 +718,8 @@ public class Main {
     else if (x == 4){
       MediaFinal(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems);
     }
-    else if (x == 5){
-      verAlunos(turmas, numeros, nomes, algNotas, javaNotas, vbNotas, nElems, 1);
-    }
   }
+
 
 
   private static void MediaFinal(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas,
@@ -1121,6 +1161,7 @@ public class Main {
 
   }
 
+
   private static void exportarDados(String[] turmas, int[] numeros, String[] nomes, int[] algNotas, int[] javaNotas, int[] vbNotas, int nElems){
 
     int canceled;
@@ -1186,7 +1227,7 @@ public class Main {
     int result;
 
     //Vetores
-    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Sair"};
+    String[] options = {"Inserir Aluno", "Editar Aluno", "Ver Alunos", "Apagar Aluno", "Atualizar Dados", "Carregar Alunos", "Exportar Alunos", "Alunos com mais Vogais", "Sair"};
 
     Object[] msg;
 
@@ -1383,6 +1424,8 @@ public class Main {
     return pesquisar(numeros, nElems, output);
 
   }
+
+  
 
   private static int checkNota(String input, String nome, String notaNome) {
 
